@@ -13,7 +13,38 @@
 
 <br/>
 
-`path` is a dead simple tool for working with paths.
+`path` is a dead simple tool for working with paths. This tool provides commands which you can use to replace such tools as `basename`, `dirname`, and `readlink` and many more. But unlike these tools, `path` allows you to pass input not only as arguments, but also from stdin (_for example using pipes_). It's easy to use and doesn't require to know all this kung-fu with `find` or `xargs`.
+
+Simple examples:
+
+```bash
+find . -iname '*.txt' -print0 | xargs -0 -n1 -- basename
+# or
+find . -iname '*.txt' | xargs -L1 -I{} basename "{}"
+# with path
+find . -iname '*.txt' | path basename
+```
+
+```bash
+# Note that there is two spaces between {} and \; and if you forget
+# about this it will don't work. Also in this case we will run 'basename'
+# for each item in find output.
+find . -mindepth 1 -maxdepth 1 -type d -exec basename {}  \;
+# with path
+find . -mindepth 1 -maxdepth 1 -type d | path basename
+```
+
+Also, it works MUCH faster:
+
+```bash
+time find . -iname '*.go' -print0 | xargs -0 -n1 -- basename
+# find . -iname '*.go' -print0  0.07s user 0.12s system 4% cpu 4.255 total
+# xargs -0 -n1 -- basename  2.59s user 2.74s system 102% cpu 5.195 total
+
+time find . -iname '*.go' | path basename
+# find . -iname '*.go'  0.08s user 0.09s system 99% cpu 0.174 total
+# path basename  0.02s user 0.02s system 21% cpu 0.207 total
+```
 
 ### Installation
 
@@ -23,6 +54,13 @@ To build the `path` from scratch, make sure you have a working Go 1.20+ workspac
 
 ```
 go install github.com/essentialkaos/path@latest
+```
+
+#### From [ESSENTIAL KAOS Public Repository](https://yum.kaos.st) for EL 7/8/9
+
+```bash
+sudo yum install -y https://yum.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
+sudo yum install path
 ```
 
 #### Prebuilt binaries
