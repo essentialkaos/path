@@ -85,7 +85,7 @@ Options
 
   --zero, -z         End each output line with NUL, not newline
   --space, -s        End each output line with space, not newline
-  --quiet, -q        Supress all error messages
+  --quiet, -q        Suppress all error messages
   --no-color, -nc    Disable colors in output
   --help, -h         Show this help message
   --version, -v      Show version

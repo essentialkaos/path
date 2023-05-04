@@ -262,7 +262,7 @@ func genUsage() *usage.Info {
 
 	info.AddOption(OPT_ZERO, "End each output line with NUL, not newline")
 	info.AddOption(OPT_SPACE, "End each output line with space, not newline")
-	info.AddOption(OPT_QUIET, "Supress all error messages")
+	info.AddOption(OPT_QUIET, "Suppress all error messages")
 	info.AddOption(OPT_NO_COLOR, "Disable colors in output")
 	info.AddOption(OPT_HELP, "Show this help message")
 	info.AddOption(OPT_VER, "Show version")
