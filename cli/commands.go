@@ -194,6 +194,11 @@ func cmdVolume(args options.Arguments) (error, bool) {
 
 // cmdMatch is handler for "match" command
 func cmdMatch(args options.Arguments) (error, bool) {
+	if len(args) < 2 {
+		printError("Not enough arguments")
+		return nil, false
+	}
+
 	pattern := args.Get(0).String()
 	input, err := getInputData(args[1:])
 
@@ -229,6 +234,11 @@ func cmdMatch(args options.Arguments) (error, bool) {
 
 // cmdJoin is handler for "join" command
 func cmdJoin(args options.Arguments) (error, bool) {
+	if len(args) < 2 {
+		printError("Not enough arguments")
+		return nil, false
+	}
+
 	root := args.Get(0).String()
 	input, err := getInputData(args[1:])
 
@@ -300,6 +310,11 @@ func cmdIsSafe(args options.Arguments) (error, bool) {
 
 // cmdIsMatch is handler for "is-match" command
 func cmdIsMatch(args options.Arguments) (error, bool) {
+	if len(args) < 2 {
+		printError("Not enough arguments")
+		return nil, false
+	}
+
 	pattern := args.Get(0).String()
 	input, err := getInputData(args[1:])
 
