@@ -114,6 +114,7 @@ Commands
   ext                 Print file extension
   volume              Print leading volume name
   match pattern       Filter given path using pattern
+  join root           Join path elements
   is-abs              Check if given path is absolute
   is-local            Check if given path is local
   is-safe             Check if given path is safe

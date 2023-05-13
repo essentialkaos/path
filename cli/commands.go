@@ -227,6 +227,26 @@ func cmdMatch(args options.Arguments) (error, bool) {
 	return nil, true
 }
 
+// cmdJoin is handler for "join" command
+func cmdJoin(args options.Arguments) (error, bool) {
+	root := args.Get(0).String()
+	input, err := getInputData(args[1:])
+
+	if err != nil {
+		return err, false
+	}
+
+	path, err := path.JoinSecure(root, input...)
+
+	if err != nil {
+		return err, false
+	}
+
+	fmt.Println(path)
+
+	return nil, true
+}
+
 // cmdIsAbs is handler for "is-abs" command
 func cmdIsAbs(args options.Arguments) (error, bool) {
 	input, err := getInputData(args)

@@ -30,7 +30,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "0.0.1"
+	VER  = "0.0.2"
 	DESC = "Dead simple tool for working with paths"
 )
 
@@ -62,6 +62,7 @@ const (
 	CMD_ABS      = "abs"
 	CMD_VOLUME   = "volume"
 	CMD_MATCH    = "match"
+	CMD_JOIN     = "join"
 	CMD_IS_ABS   = "is-abs"
 	CMD_IS_LOCAL = "is-local"
 	CMD_IS_SAFE  = "is-safe"
@@ -186,6 +187,8 @@ func process(args options.Arguments) (error, bool) {
 		return cmdVolume(cmdArgs)
 	case CMD_MATCH:
 		return cmdMatch(cmdArgs)
+	case CMD_JOIN:
+		return cmdJoin(cmdArgs)
 	case CMD_IS_ABS:
 		return cmdIsAbs(cmdArgs)
 	case CMD_IS_LOCAL:
@@ -255,6 +258,7 @@ func genUsage() *usage.Info {
 	info.AddCommand(CMD_EXT, "Print file extension")
 	info.AddCommand(CMD_VOLUME, "Print leading volume name")
 	info.AddCommand(CMD_MATCH, "Filter given path using pattern", "pattern")
+	info.AddCommand(CMD_JOIN, "Join path elements", "root")
 	info.AddCommand(CMD_IS_ABS, "Check if given path is absolute")
 	info.AddCommand(CMD_IS_LOCAL, "Check if given path is local")
 	info.AddCommand(CMD_IS_SAFE, "Check if given path is safe")
