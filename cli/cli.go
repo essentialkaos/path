@@ -60,7 +60,6 @@ const (
 	CMD_COMPACT  = "compact"
 	CMD_EXT      = "ext"
 	CMD_ABS      = "abs"
-	CMD_VOLUME   = "volume"
 	CMD_MATCH    = "match"
 	CMD_JOIN     = "join"
 	CMD_IS_ABS   = "is-abs"
@@ -183,8 +182,6 @@ func process(args options.Arguments) (error, bool) {
 		return cmdAbs(cmdArgs)
 	case CMD_EXT:
 		return cmdExt(cmdArgs)
-	case CMD_VOLUME:
-		return cmdVolume(cmdArgs)
 	case CMD_MATCH:
 		return cmdMatch(cmdArgs)
 	case CMD_JOIN:
@@ -256,7 +253,6 @@ func genUsage() *usage.Info {
 	info.AddCommand(CMD_COMPACT, "Converts path to compact representation")
 	info.AddCommand(CMD_ABS, "Print absolute representation of path")
 	info.AddCommand(CMD_EXT, "Print file extension")
-	info.AddCommand(CMD_VOLUME, "Print leading volume name")
 	info.AddCommand(CMD_MATCH, "Filter given path using pattern", "pattern")
 	info.AddCommand(CMD_JOIN, "Join path elements", "root")
 	info.AddCommand(CMD_IS_ABS, "Check if given path is absolute")

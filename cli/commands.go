@@ -24,176 +24,178 @@ import (
 
 // cmdBasename is handler for "base" command
 func cmdBasename(args options.Arguments) (error, bool) {
+	var result []string
+
 	input, err := getInputData(args)
 
 	if err != nil {
 		return err, false
 	}
 
-	for i, item := range input {
-		fmt.Printf("%s", path.Base(item))
-
-		if i+1 < len(input) {
-			printSeparator()
-		}
+	for _, item := range input {
+		result = append(result, path.Base(item))
 	}
 
-	fmt.Println()
+	if len(result) == 0 {
+		return err, false
+	}
+
+	fmt.Println(strings.Join(result, getSeparator()))
 
 	return nil, true
 }
 
 // cmdDirname is handler for "dir" command
 func cmdDirname(args options.Arguments) (error, bool) {
+	var result []string
+
 	input, err := getInputData(args)
 
 	if err != nil {
 		return err, false
 	}
 
-	for i, item := range input {
-		fmt.Printf("%s", path.Dir(item))
-
-		if i+1 < len(input) {
-			printSeparator()
-		}
+	for _, item := range input {
+		result = append(result, path.Dir(item))
 	}
 
-	fmt.Println()
+	if len(result) == 0 {
+		return err, false
+	}
+
+	fmt.Println(strings.Join(result, getSeparator()))
 
 	return nil, true
 }
 
 // cmdReadlink is handler for "link" command
 func cmdReadlink(args options.Arguments) (error, bool) {
+	var result []string
+
 	input, err := getInputData(args)
 
 	if err != nil {
 		return err, false
 	}
 
-	for i, item := range input {
+	for _, item := range input {
 		dest, _ := filepath.EvalSymlinks(item)
-		fmt.Printf("%s", dest)
 
-		if i+1 < len(input) {
-			printSeparator()
+		if dest != "" {
+			result = append(result, dest)
 		}
 	}
 
-	fmt.Println()
+	if len(result) == 0 {
+		return err, false
+	}
+
+	fmt.Println(strings.Join(result, getSeparator()))
 
 	return nil, true
 }
 
 // cmdClean is handler for "clean" command
 func cmdClean(args options.Arguments) (error, bool) {
+	var result []string
+
 	input, err := getInputData(args)
 
 	if err != nil {
 		return err, false
 	}
 
-	for i, item := range input {
-		fmt.Printf("%s", path.Clean(item))
-
-		if i+1 < len(input) {
-			printSeparator()
-		}
+	for _, item := range input {
+		result = append(result, path.Clean(item))
 	}
 
-	fmt.Println()
+	if len(result) == 0 {
+		return err, false
+	}
+
+	fmt.Println(strings.Join(result, getSeparator()))
 
 	return nil, true
 }
 
 // cmdCompact is handler for "compact" command
 func cmdCompact(args options.Arguments) (error, bool) {
+	var result []string
+
 	input, err := getInputData(args)
 
 	if err != nil {
 		return err, false
 	}
 
-	for i, item := range input {
-		fmt.Printf("%s", path.Compact(item))
-
-		if i+1 < len(input) {
-			printSeparator()
-		}
+	for _, item := range input {
+		result = append(result, path.Compact(item))
 	}
 
-	fmt.Println()
+	if len(result) == 0 {
+		return err, false
+	}
+
+	fmt.Println(strings.Join(result, getSeparator()))
 
 	return nil, true
 }
 
 // cmdExt is handler for "ext" command
 func cmdExt(args options.Arguments) (error, bool) {
+	var result []string
+
 	input, err := getInputData(args)
 
 	if err != nil {
 		return err, false
 	}
 
-	for i, item := range input {
-		fmt.Printf("%s", path.Ext(item))
+	for _, item := range input {
+		ext := path.Ext(item)
 
-		if i+1 < len(input) {
-			printSeparator()
+		if ext != "" {
+			result = append(result, ext)
 		}
 	}
 
-	fmt.Println()
+	if len(result) == 0 {
+		return err, false
+	}
+
+	fmt.Println(strings.Join(result, getSeparator()))
 
 	return nil, true
 }
 
 // cmdAbs is handler for "abs" command
 func cmdAbs(args options.Arguments) (error, bool) {
+	var result []string
+
 	input, err := getInputData(args)
 
 	if err != nil {
 		return err, false
 	}
 
-	for i, item := range input {
+	for _, item := range input {
 		dest, _ := filepath.Abs(item)
-		fmt.Printf("%s", dest)
-
-		if i+1 < len(input) {
-			printSeparator()
-		}
+		result = append(result, dest)
 	}
 
-	fmt.Println()
-
-	return nil, true
-}
-
-// cmdVolume is handler for "volume" command
-func cmdVolume(args options.Arguments) (error, bool) {
-	input, err := getInputData(args)
-
-	if err != nil {
+	if len(result) == 0 {
 		return err, false
 	}
 
-	for i, item := range input {
-		fmt.Printf("%s", filepath.VolumeName(item))
-
-		if i+1 < len(input) {
-			printSeparator()
-		}
-	}
-
-	fmt.Println()
+	fmt.Println(strings.Join(result, getSeparator()))
 
 	return nil, true
 }
 
 // cmdMatch is handler for "match" command
 func cmdMatch(args options.Arguments) (error, bool) {
+	var result []string
+
 	input, err := getInputData(args)
 
 	if err != nil {
@@ -206,28 +208,22 @@ func cmdMatch(args options.Arguments) (error, bool) {
 	}
 
 	pattern := input[0]
-	isDataPrinted := false
 
-	for i, item := range input[1:] {
+	for _, item := range input[1:] {
 		isMatch, _ := filepath.Match(pattern, item)
 
 		if !isMatch {
 			continue
 		}
 
-		isDataPrinted = true
-		fmt.Printf("%s", item)
-
-		if i+1 < len(input) {
-			printSeparator()
-		}
+		result = append(result, item)
 	}
 
-	if !isDataPrinted {
-		return nil, false
+	if len(result) == 0 {
+		return err, false
 	}
 
-	fmt.Println()
+	fmt.Println(strings.Join(result, getSeparator()))
 
 	return nil, true
 }
@@ -366,5 +362,17 @@ func printSeparator() {
 		fmt.Printf("\x00")
 	default:
 		fmt.Println()
+	}
+}
+
+// getSeparator returns data separator
+func getSeparator() string {
+	switch {
+	case options.GetB(OPT_SPACE):
+		return " "
+	case options.GetB(OPT_ZERO):
+		return "\x00"
+	default:
+		return "\n"
 	}
 }

@@ -112,7 +112,6 @@ Commands
   compact             Converts path to compact representation
   abs                 Print absolute representation of path
   ext                 Print file extension
-  volume              Print leading volume name
   match pattern       Filter given path using pattern
   join root           Join path elements
   is-abs              Check if given path is absolute

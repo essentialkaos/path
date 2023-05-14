@@ -1,0 +1,121 @@
+# Bibop recipe for path
+# See more: https://kaos.sh/bibop
+
+################################################################################
+
+fast-finish yes
+
+################################################################################
+
+command "path basename" "Check basic command without arguments"
+  exit 1
+  output-contains "Input is empty"
+
+command "path -q basename" "Check basic command without arguments in quiet mode"
+  exit 1
+  output-empty
+
+################################################################################
+
+command "path base /home/user/john/file.txt" "Check base command"
+  exit 0
+  output-contains "file.txt"
+
+command "path basename /home/user/john/file.txt" "Check basename command"
+  exit 0
+  output-contains "file.txt"
+
+################################################################################
+
+command "path dir /home/user/john/file.txt" "Check dir command"
+  exit 0
+  output-contains "/home/user/john"
+
+command "path dirname /home/user/john/file.txt" "Check dirname command"
+  exit 0
+  output-contains "/home/user/john"
+
+################################################################################
+
+command "ln -sf path.recipe recipe.link" "Create link for the test"
+  exit 0
+
+command "path link recipe.link" "Check link command"
+  exit 0
+  output-contains "path.recipe"
+
+################################################################################
+
+command "path clean /home/user/john/../bob/file.txt" "Check clean command"
+  exit 0
+  output-contains "/home/user/bob/file.txt"
+
+################################################################################
+
+command "path compact /home/user/john/file.txt" "Check compact command"
+  exit 0
+  output-contains "/h/u/j/file.txt"
+
+################################################################################
+
+command "path abs /home/user/john/../bob/file.txt" "Check abs command"
+  exit 0
+  output-contains "/home/user/bob/file.txt"
+
+################################################################################
+
+command "path ext /home/user/john/file.txt" "Check ext command"
+  exit 0
+  output-contains ".txt"
+
+command "path ext /home/user/john" "Check ext command (no ext)"
+  exit 1
+  output-empty
+
+################################################################################
+
+command "path match /home/user/*/file.txt /home/user/bob/file.txt /home/user/bob/file.log" "Check match command"
+  exit 0
+  output-contains "/home/user/bob/file.txt"
+  !output-contains "/home/user/bob/file.log"
+
+################################################################################
+
+command "path is-abs /home/user/bob/file.txt" "Check is-abs command"
+  exit 0
+
+command "path is-abs ../bob/file.txt" "Check is-abs command"
+  exit 1
+
+################################################################################
+
+command "path is-local bob/file.txt" "Check is-abs command"
+  exit 0
+
+command "path is-local /home/user/bob/file.txt" "Check is-abs command"
+  exit 1
+
+################################################################################
+
+command "path is-safe /home/user/bob/file.txt" "Check is-safe command"
+  exit 0
+
+command "path is-safe /root/file.conf" "Check is-safe command"
+  exit 1
+
+################################################################################
+
+command "path is-match /home/user/*/file.txt /home/user/bob/file.txt" "Check is-match command"
+  exit 0
+
+command "path is-match /home/user/*/file.txt /home/user/bob/file.log" "Check is-match command"
+  exit 1
+
+################################################################################
+
+command "path base -s /home/user/bob/file.txt /home/user/bob/file.log" "Check custom separator"
+  exit 0
+  output-contains "file.txt file.log"
+
+################################################################################
+
