@@ -194,21 +194,21 @@ func cmdVolume(args options.Arguments) (error, bool) {
 
 // cmdMatch is handler for "match" command
 func cmdMatch(args options.Arguments) (error, bool) {
-	if len(args) < 2 {
-		printError("Not enough arguments")
-		return nil, false
-	}
-
-	pattern := args.Get(0).String()
-	input, err := getInputData(args[1:])
+	input, err := getInputData(args)
 
 	if err != nil {
 		return err, false
 	}
 
+	if len(input) < 2 {
+		printError("Not enough arguments")
+		return nil, false
+	}
+
+	pattern := input[0]
 	isDataPrinted := false
 
-	for i, item := range input {
+	for i, item := range input[1:] {
 		isMatch, _ := filepath.Match(pattern, item)
 
 		if !isMatch {
@@ -234,19 +234,19 @@ func cmdMatch(args options.Arguments) (error, bool) {
 
 // cmdJoin is handler for "join" command
 func cmdJoin(args options.Arguments) (error, bool) {
-	if len(args) < 2 {
-		printError("Not enough arguments")
-		return nil, false
-	}
-
-	root := args.Get(0).String()
-	input, err := getInputData(args[1:])
+	input, err := getInputData(args)
 
 	if err != nil {
 		return err, false
 	}
 
-	path, err := path.JoinSecure(root, input...)
+	if len(input) < 2 {
+		printError("Not enough arguments")
+		return nil, false
+	}
+
+	root := input[0]
+	path, err := path.JoinSecure(root, input[1:]...)
 
 	if err != nil {
 		return err, false
@@ -310,19 +310,20 @@ func cmdIsSafe(args options.Arguments) (error, bool) {
 
 // cmdIsMatch is handler for "is-match" command
 func cmdIsMatch(args options.Arguments) (error, bool) {
-	if len(args) < 2 {
-		printError("Not enough arguments")
-		return nil, false
-	}
-
-	pattern := args.Get(0).String()
-	input, err := getInputData(args[1:])
+	input, err := getInputData(args)
 
 	if err != nil {
 		return err, false
 	}
 
-	for _, item := range input {
+	if len(input) < 2 {
+		printError("Not enough arguments")
+		return nil, false
+	}
+
+	pattern := input[0]
+
+	for _, item := range input[1:] {
 		isMatch, _ := filepath.Match(pattern, item)
 
 		if !isMatch {
@@ -337,31 +338,23 @@ func cmdIsMatch(args options.Arguments) (error, bool) {
 
 // getInputData returns import from stdin, arguments or both
 func getInputData(args options.Arguments) ([]string, error) {
-	var rawData string
+	result := strutil.Fields(args.Flatten())
 
 	if !fsutil.IsCharacterDevice("/dev/stdin") {
 		stdinData, err := io.ReadAll(os.Stdin)
 
 		if err != nil {
-			return nil, fmt.Errorf("Can't read stdin data: %v", err)
+			return nil, fmt.Errorf("Can't data from standard input: %v", err)
 		}
 
-		rawData = strings.ReplaceAll(string(stdinData), "\n", " ")
+		result = append(result, strutil.Fields(strings.ReplaceAll(string(stdinData), "\n", " "))...)
 	}
 
-	if len(args) > 0 {
-		if rawData == "" {
-			rawData = args.Flatten()
-		} else {
-			rawData += " " + args.Flatten()
-		}
-	}
-
-	if rawData == "" {
+	if len(result) == 0 {
 		return nil, fmt.Errorf("Input is empty")
 	}
 
-	return strutil.Fields(rawData), nil
+	return result, nil
 }
 
 // printSeparator prints data separator
