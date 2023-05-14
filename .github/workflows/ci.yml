@@ -46,6 +46,12 @@ jobs:
       - name: Run tests
         run: make all
 
+      - name: Run bibop tests
+        uses: essentialkaos/bibop-action@v1
+        with:
+          path: .
+          recipe: .bibop/path.recipe
+
   Perfecto:
     name: Perfecto
     runs-on: ubuntu-latest
