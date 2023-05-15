@@ -30,7 +30,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "0.0.1"
+	VER  = "0.0.2"
 	DESC = "Dead simple tool for working with paths"
 )
 
@@ -60,8 +60,8 @@ const (
 	CMD_COMPACT  = "compact"
 	CMD_EXT      = "ext"
 	CMD_ABS      = "abs"
-	CMD_VOLUME   = "volume"
 	CMD_MATCH    = "match"
+	CMD_JOIN     = "join"
 	CMD_IS_ABS   = "is-abs"
 	CMD_IS_LOCAL = "is-local"
 	CMD_IS_SAFE  = "is-safe"
@@ -77,7 +77,7 @@ var optMap = options.Map{
 	OPT_QUIET:    {Type: options.BOOL},
 	OPT_NO_COLOR: {Type: options.BOOL},
 	OPT_HELP:     {Type: options.BOOL},
-	OPT_VER:      {Type: options.BOOL},
+	OPT_VER:      {Type: options.MIXED},
 
 	OPT_VERB_VER:     {Type: options.BOOL},
 	OPT_COMPLETION:   {},
@@ -108,7 +108,7 @@ func Run(gitRev string, gomod []byte) {
 		printMan()
 		os.Exit(0)
 	case options.GetB(OPT_VER):
-		genAbout(gitRev).Print()
+		genAbout(gitRev).Print(options.GetS(OPT_VER))
 		os.Exit(0)
 	case options.GetB(OPT_VERB_VER):
 		support.Print(APP, VER, gitRev, gomod)
@@ -182,10 +182,10 @@ func process(args options.Arguments) (error, bool) {
 		return cmdAbs(cmdArgs)
 	case CMD_EXT:
 		return cmdExt(cmdArgs)
-	case CMD_VOLUME:
-		return cmdVolume(cmdArgs)
 	case CMD_MATCH:
 		return cmdMatch(cmdArgs)
+	case CMD_JOIN:
+		return cmdJoin(cmdArgs)
 	case CMD_IS_ABS:
 		return cmdIsAbs(cmdArgs)
 	case CMD_IS_LOCAL:
@@ -253,8 +253,8 @@ func genUsage() *usage.Info {
 	info.AddCommand(CMD_COMPACT, "Converts path to compact representation")
 	info.AddCommand(CMD_ABS, "Print absolute representation of path")
 	info.AddCommand(CMD_EXT, "Print file extension")
-	info.AddCommand(CMD_VOLUME, "Print leading volume name")
 	info.AddCommand(CMD_MATCH, "Filter given path using pattern", "pattern")
+	info.AddCommand(CMD_JOIN, "Join path elements", "root")
 	info.AddCommand(CMD_IS_ABS, "Check if given path is absolute")
 	info.AddCommand(CMD_IS_LOCAL, "Check if given path is local")
 	info.AddCommand(CMD_IS_SAFE, "Check if given path is safe")

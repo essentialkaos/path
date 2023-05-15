@@ -13,7 +13,7 @@
 
 <br/>
 
-`path` is a dead simple tool for working with paths. This tool provides commands which you can use to replace such tools as `basename`, `dirname`, and `readlink` and many more. But unlike these tools, `path` allows you to pass input not only as arguments, but also from stdin (_for example using pipes_). It's easy to use and doesn't require to know all this kung-fu with `find` or `xargs`.
+`path` is a dead simple tool for working with paths. This tool provides commands which you can use to replace such tools as `basename`, `dirname`, and `readlink` and many more. But unlike these tools, `path` allows you to pass input not only as arguments, but also using standard input (_for example with pipes_). It's easy to use and doesn't require to know all this kung-fu with `find` or `xargs`.
 
 Simple examples:
 
@@ -112,8 +112,8 @@ Commands
   compact             Converts path to compact representation
   abs                 Print absolute representation of path
   ext                 Print file extension
-  volume              Print leading volume name
   match pattern       Filter given path using pattern
+  join root           Join path elements
   is-abs              Check if given path is absolute
   is-local            Check if given path is local
   is-safe             Check if given path is safe
