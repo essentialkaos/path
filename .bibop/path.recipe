@@ -81,6 +81,36 @@ command "path match /home/user/*/file.txt /home/user/bob/file.txt /home/user/bob
 
 ################################################################################
 
+command "path -s add-prefix /home/user/ john bob jack"
+  exit 0
+  output-contains "/home/user/john /home/user/bob /home/user/jack"
+
+################################################################################
+
+command "path -s del-prefix /home/user/ /home/user/john /home/user/bob /home/user/jack"
+  exit 0
+  output-contains "john bob jack"
+
+################################################################################
+
+command "path -s add-suffix .jpg john bob jack"
+  exit 0
+  output-contains "john.jpg bob.jpg jack.jpg"
+
+################################################################################
+
+command "path -s del-suffix .jpg john.jpg bob.jpg jack.jpg"
+  exit 0
+  output-contains "john bob jack"
+
+################################################################################
+
+command "path -s exclude _small john_small.jpg bob_small.jpg jack_small.jpg"
+  exit 0
+  output-contains "john.jpg bob.jpg jack.jpg"
+
+################################################################################
+
 command "path is-abs /home/user/bob/file.txt" "Check is-abs command"
   exit 0
 
