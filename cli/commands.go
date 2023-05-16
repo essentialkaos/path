@@ -253,6 +253,158 @@ func cmdJoin(args options.Arguments) (error, bool) {
 	return nil, true
 }
 
+// cmdAddPrefix is handler for "add-prefix" command
+func cmdAddPrefix(args options.Arguments) (error, bool) {
+	var result []string
+
+	input, err := getInputData(args)
+
+	if err != nil {
+		return err, false
+	}
+
+	if len(input) < 2 {
+		printError("Not enough arguments")
+		return nil, false
+	}
+
+	prefix := input[0]
+
+	for _, item := range input[1:] {
+		result = append(result, prefix+item)
+	}
+
+	if len(result) == 0 {
+		return err, false
+	}
+
+	fmt.Println(strings.Join(result, getSeparator()))
+
+	return nil, true
+}
+
+// cmdDelPrefix is handler for "del-prefix" command
+func cmdDelPrefix(args options.Arguments) (error, bool) {
+	var result []string
+
+	input, err := getInputData(args)
+
+	if err != nil {
+		return err, false
+	}
+
+	if len(input) < 2 {
+		printError("Not enough arguments")
+		return nil, false
+	}
+
+	prefix := input[0]
+
+	for _, item := range input[1:] {
+		data, _ := strings.CutPrefix(item, prefix)
+		result = append(result, data)
+	}
+
+	if len(result) == 0 {
+		return err, false
+	}
+
+	fmt.Println(strings.Join(result, getSeparator()))
+
+	return nil, true
+}
+
+// cmdAddSuffix is handler for "add-suffix" command
+func cmdAddSuffix(args options.Arguments) (error, bool) {
+	var result []string
+
+	input, err := getInputData(args)
+
+	if err != nil {
+		return err, false
+	}
+
+	if len(input) < 2 {
+		printError("Not enough arguments")
+		return nil, false
+	}
+
+	suffix := input[0]
+
+	for _, item := range input[1:] {
+		result = append(result, item+suffix)
+	}
+
+	if len(result) == 0 {
+		return err, false
+	}
+
+	fmt.Println(strings.Join(result, getSeparator()))
+
+	return nil, true
+}
+
+// cmdDelSuffix is handler for "del-suffix" command
+func cmdDelSuffix(args options.Arguments) (error, bool) {
+	var result []string
+
+	input, err := getInputData(args)
+
+	if err != nil {
+		return err, false
+	}
+
+	if len(input) < 2 {
+		printError("Not enough arguments")
+		return nil, false
+	}
+
+	prefix := input[0]
+
+	for _, item := range input[1:] {
+		data, _ := strings.CutSuffix(item, prefix)
+		result = append(result, data)
+	}
+
+	if len(result) == 0 {
+		return err, false
+	}
+
+	fmt.Println(strings.Join(result, getSeparator()))
+
+	return nil, true
+}
+
+// cmdExclude is handler for "exclude" command
+func cmdExclude(args options.Arguments) (error, bool) {
+	var result []string
+
+	input, err := getInputData(args)
+
+	if err != nil {
+		return err, false
+	}
+
+	if len(input) < 2 {
+		printError("Not enough arguments")
+		return nil, false
+	}
+
+	substr := input[0]
+
+	for _, item := range input[1:] {
+		result = append(result, strutil.Exclude(item, substr))
+	}
+
+	if len(result) == 0 {
+		return err, false
+	}
+
+	fmt.Println(strings.Join(result, getSeparator()))
+
+	return nil, true
+}
+
 // cmdIsAbs is handler for "is-abs" command
 func cmdIsAbs(args options.Arguments) (error, bool) {
 	input, err := getInputData(args)
@@ -351,18 +503,6 @@ func getInputData(args options.Arguments) ([]string, error) {
 	}
 
 	return result, nil
-}
-
-// printSeparator prints data separator
-func printSeparator() {
-	switch {
-	case options.GetB(OPT_SPACE):
-		fmt.Printf(" ")
-	case options.GetB(OPT_ZERO):
-		fmt.Printf("\x00")
-	default:
-		fmt.Println()
-	}
 }
 
 // getSeparator returns data separator

@@ -105,19 +105,24 @@ Usage: path {options} {command}
 
 Commands
 
-  base                Strip directory and suffix from filenames
-  dir                 Strip last component from file name
-  link                Print resolved symbolic links or canonical file names
-  clean               Print shortest path name equivalent to path by purely lexical processing
-  compact             Converts path to compact representation
-  abs                 Print absolute representation of path
-  ext                 Print file extension
-  match pattern       Filter given path using pattern
-  join root           Join path elements
-  is-abs              Check if given path is absolute
-  is-local            Check if given path is local
-  is-safe             Check if given path is safe
-  is-match pattern    Check if given path is match to pattern
+  base                 Strip directory and suffix from filenames
+  dir                  Strip last component from file name
+  link                 Print resolved symbolic links or canonical file names
+  clean                Print shortest path name equivalent to path by purely lexical processing
+  compact              Converts path to compact representation
+  abs                  Print absolute representation of path
+  ext                  Print file extension
+  match pattern        Filter given path using pattern
+  join root            Join path elements
+  add-prefix prefix    Add the substring at the beginning
+  del-prefix prefix    Remove the substring at the beginning
+  add-suffix suffix    Add the substring at the end
+  del-suffix suffix    Remove the substring at the end
+  exclude substr       Exclude part of the string
+  is-abs               Check if given path is absolute
+  is-local             Check if given path is local
+  is-safe              Check if given path is safe
+  is-match pattern     Check if given path is match to pattern
 
 Options
 

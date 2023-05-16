@@ -30,7 +30,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "0.0.2"
+	VER  = "0.0.3"
 	DESC = "Dead simple tool for working with paths"
 )
 
@@ -62,6 +62,13 @@ const (
 	CMD_ABS      = "abs"
 	CMD_MATCH    = "match"
 	CMD_JOIN     = "join"
+
+	CMD_ADD_PREFIX = "add-prefix"
+	CMD_DEL_PREFIX = "del-prefix"
+	CMD_ADD_SUFFIX = "add-suffix"
+	CMD_DEL_SUFFIX = "del-suffix"
+	CMD_EXCLUDE    = "exclude"
+
 	CMD_IS_ABS   = "is-abs"
 	CMD_IS_LOCAL = "is-local"
 	CMD_IS_SAFE  = "is-safe"
@@ -186,6 +193,18 @@ func process(args options.Arguments) (error, bool) {
 		return cmdMatch(cmdArgs)
 	case CMD_JOIN:
 		return cmdJoin(cmdArgs)
+
+	case CMD_ADD_PREFIX:
+		return cmdAddPrefix(cmdArgs)
+	case CMD_DEL_PREFIX:
+		return cmdDelPrefix(cmdArgs)
+	case CMD_ADD_SUFFIX:
+		return cmdAddSuffix(cmdArgs)
+	case CMD_DEL_SUFFIX:
+		return cmdDelSuffix(cmdArgs)
+	case CMD_EXCLUDE:
+		return cmdExclude(cmdArgs)
+
 	case CMD_IS_ABS:
 		return cmdIsAbs(cmdArgs)
 	case CMD_IS_LOCAL:
@@ -255,6 +274,13 @@ func genUsage() *usage.Info {
 	info.AddCommand(CMD_EXT, "Print file extension")
 	info.AddCommand(CMD_MATCH, "Filter given path using pattern", "pattern")
 	info.AddCommand(CMD_JOIN, "Join path elements", "root")
+
+	info.AddCommand(CMD_ADD_PREFIX, "Add the substring at the beginning", "prefix")
+	info.AddCommand(CMD_DEL_PREFIX, "Remove the substring at the beginning", "prefix")
+	info.AddCommand(CMD_ADD_SUFFIX, "Add the substring at the end", "suffix")
+	info.AddCommand(CMD_DEL_SUFFIX, "Remove the substring at the end", "suffix")
+	info.AddCommand(CMD_EXCLUDE, "Exclude part of the string", "substr")
+
 	info.AddCommand(CMD_IS_ABS, "Check if given path is absolute")
 	info.AddCommand(CMD_IS_LOCAL, "Check if given path is local")
 	info.AddCommand(CMD_IS_SAFE, "Check if given path is safe")
