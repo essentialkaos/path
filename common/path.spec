@@ -10,7 +10,7 @@
 
 Summary:        Dead simple tool for working with paths
 Name:           path
-Version:        0.0.2
+Version:        0.0.3
 Release:        0%{?dist}
 Group:          Applications/System
 License:        Apache License, Version 2.0
@@ -101,6 +101,13 @@ fi
 ################################################################################
 
 %changelog
+* Tue May 16 2023 Anton Novojilov <andy@essentialkaos.com> - 0.0.3-0
+- Added add-prefix command
+- Added remove-prefix command
+- Added add-suffix command
+- Added remove-suffix command
+- Added exclude command
+
 * Mon May 15 2023 Anton Novojilov <andy@essentialkaos.com> - 0.0.2-0
 - Added join command
 - Custom version info formats support
