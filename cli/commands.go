@@ -486,7 +486,9 @@ func cmdIsMatch(args options.Arguments) (error, bool) {
 
 // getInputData returns import from stdin, arguments or both
 func getInputData(args options.Arguments) ([]string, error) {
-	result := strutil.Fields(args.Flatten())
+	var result []string
+
+	data := strings.Split(args.Flatten(), " ")
 
 	if !fsutil.IsCharacterDevice("/dev/stdin") {
 		stdinData, err := io.ReadAll(os.Stdin)
@@ -495,7 +497,15 @@ func getInputData(args options.Arguments) ([]string, error) {
 			return nil, fmt.Errorf("Can't data from standard input: %v", err)
 		}
 
-		result = append(result, strutil.Fields(strings.ReplaceAll(string(stdinData), "\n", " "))...)
+		data = append(data, strings.Split(strings.ReplaceAll(string(stdinData), "\n", " "), " ")...)
+	}
+
+	for _, item := range data {
+		if strings.Trim(item, " \r\n") == "" {
+			continue
+		}
+
+		result = append(result, item)
 	}
 
 	if len(result) == 0 {
