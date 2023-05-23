@@ -10,7 +10,7 @@
 
 Summary:        Dead simple tool for working with paths
 Name:           path
-Version:        0.0.4
+Version:        0.0.5
 Release:        0%{?dist}
 Group:          Applications/System
 License:        Apache License, Version 2.0
@@ -101,6 +101,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue May 23 2023 Anton Novojilov <andy@essentialkaos.com> - 0.0.5-0
+- Add support of enabling quiet mode using environment variable (PATH_QUIET)
+
 * Wed May 17 2023 Anton Novojilov <andy@essentialkaos.com> - 0.0.4-0
 - Improve input parsing
 

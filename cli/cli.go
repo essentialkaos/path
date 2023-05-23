@@ -30,7 +30,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "0.0.4"
+	VER  = "0.0.5"
 	DESC = "Dead simple tool for working with paths"
 )
 
@@ -90,6 +90,9 @@ var optMap = options.Map{
 	OPT_COMPLETION:   {},
 	OPT_GENERATE_MAN: {Type: options.BOOL},
 }
+
+// quietMode is quiet mode flag
+var quietMode bool
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 
@@ -167,6 +170,8 @@ func configureUI() {
 	if options.GetB(OPT_NO_COLOR) {
 		fmtc.DisableColors = true
 	}
+
+	quietMode = options.GetB(OPT_QUIET) || os.Getenv("PATH_QUIET") != ""
 }
 
 // process starts arguments processing
@@ -220,7 +225,7 @@ func process(args options.Arguments) (error, bool) {
 
 // printError prints error message to console
 func printError(f string, a ...interface{}) {
-	if options.GetB(OPT_QUIET) {
+	if quietMode {
 		return
 	}
 
@@ -311,6 +316,11 @@ func genUsage() *usage.Info {
 	info.AddRawExample(
 		"ls -1 | path "+CMD_IS_MATCH+" '*.txt' && echo MATCH!",
 		"Check if all files in current directory is match to pattern",
+	)
+
+	info.AddRawExample(
+		"PATH_QUIET=1 path "+CMD_DIRNAME+" /path/to/file.txt",
+		"Run "+CMD_DIRNAME+" command in quiet mode enabled by environment variable",
 	)
 
 	return info
