@@ -146,6 +146,9 @@ Examples
 
   ls -1 | path is-match '*.txt' && echo MATCH!
   Check if all files in current directory is match to pattern
+
+  PATH_QUIET=1 path dir /path/to/file.txt
+  Run dir command in quiet mode enabled by environment variable
 ```
 
 ### CI Status
