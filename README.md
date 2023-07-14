@@ -56,10 +56,10 @@ To build the `path` from scratch, make sure you have a working Go 1.20+ workspac
 go install github.com/essentialkaos/path@latest
 ```
 
-#### From [ESSENTIAL KAOS Public Repository](https://yum.kaos.st) for EL 7/8/9
+#### From [ESSENTIAL KAOS Public Repository](https://pkgs.kaos.st) for EL 7/8/9
 
 ```bash
-sudo yum install -y https://yum.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
+sudo yum install -y https://pkgs.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
 sudo yum install path
 ```
 
