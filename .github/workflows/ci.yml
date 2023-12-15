@@ -46,14 +46,6 @@ jobs:
       - name: Run tests
         run: make all
 
-      - name: Upload built artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: path
-          path: ${{github.workspace}}/path
-          if-no-files-found: error
-          retention-days: 1
-
   Bibop:
     name: Bibop
     runs-on: ubuntu-latest
