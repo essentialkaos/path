@@ -11,34 +11,24 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"runtime/debug"
 	"strings"
 
 	"github.com/essentialkaos/ek/v12/fmtc"
 	"github.com/essentialkaos/ek/v12/fmtutil"
 	"github.com/essentialkaos/ek/v12/hash"
 	"github.com/essentialkaos/ek/v12/strutil"
+	"github.com/essentialkaos/ek/v12/system"
+	"github.com/essentialkaos/ek/v12/system/container"
 
 	"github.com/essentialkaos/depsy"
 )
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 
-// Pkg contains basic package info
-type Pkg struct {
-	Name    string
-	Version string
-}
-
-// Pkgs is slice with packages
-type Pkgs []Pkg
-
-// ////////////////////////////////////////////////////////////////////////////////// //
-
 // Print prints verbose info about application, system, dependencies and
 // important environment
 func Print(app, ver, gitRev string, gomod []byte) {
-	pkgs := collectEnvInfo()
-
 	fmtutil.SeparatorTitleColorTag = "{s-}"
 	fmtutil.SeparatorFullscreen = false
 	fmtutil.SeparatorColorTag = "{s-}"
@@ -46,7 +36,6 @@ func Print(app, ver, gitRev string, gomod []byte) {
 
 	showApplicationInfo(app, ver, gitRev)
 	showOSInfo()
-	showEnvInfo(pkgs)
 	showDepsInfo(gomod)
 
 	fmtutil.Separator(false)
@@ -66,6 +55,10 @@ func showApplicationInfo(app, ver, gitRev string) {
 		strings.TrimLeft(runtime.Version(), "go"),
 		runtime.GOOS, runtime.GOARCH,
 	))
+
+	if gitRev == "" {
+		gitRev = extractGitRevFromBuildInfo()
+	}
 
 	if gitRev != "" {
 		if !fmtc.DisableColors && fmtc.IsTrueColorSupported() {
@@ -88,6 +81,52 @@ func showApplicationInfo(app, ver, gitRev string) {
 	}
 }
 
+// showOSInfo shows verbose information about system
+func showOSInfo() {
+	osInfo, err := system.GetOSInfo()
+
+	if err == nil {
+		fmtutil.Separator(false, "OS INFO")
+
+		printInfo(12, "Name", osInfo.ColoredName())
+		printInfo(12, "Pretty Name", osInfo.ColoredPrettyName())
+		printInfo(12, "Version", osInfo.Version)
+		printInfo(12, "ID", osInfo.ID)
+		printInfo(12, "ID Like", osInfo.IDLike)
+		printInfo(12, "Version ID", osInfo.VersionID)
+		printInfo(12, "Version Code", osInfo.VersionCodename)
+		printInfo(12, "Platform ID", osInfo.PlatformID)
+		printInfo(12, "CPE", osInfo.CPEName)
+	}
+
+	systemInfo, err := system.GetSystemInfo()
+
+	if err != nil {
+		return
+	} else if osInfo == nil {
+		fmtutil.Separator(false, "SYSTEM INFO")
+		printInfo(12, "Name", systemInfo.OS)
+	}
+
+	printInfo(12, "Arch", systemInfo.Arch)
+	printInfo(12, "Kernel", systemInfo.Kernel)
+
+	containerEngine := "No"
+
+	switch container.GetEngine() {
+	case container.DOCKER:
+		containerEngine = "Yes (Docker)"
+	case container.PODMAN:
+		containerEngine = "Yes (Podman)"
+	case container.LXC:
+		containerEngine = "Yes (LXC)"
+	}
+
+	fmtc.NewLine()
+
+	printInfo(12, "Container", containerEngine)
+}
+
 // showDepsInfo shows information about all dependencies
 func showDepsInfo(gomod []byte) {
 	deps := depsy.Extract(gomod, false)
@@ -107,6 +146,23 @@ func showDepsInfo(gomod []byte) {
 	}
 }
 
+// extractGitRevFromBuildInfo extracts git SHA from embedded build info
+func extractGitRevFromBuildInfo() string {
+	info, ok := debug.ReadBuildInfo()
+
+	if !ok {
+		return ""
+	}
+
+	for _, s := range info.Settings {
+		if s.Key == "vcs.revision" && len(s.Value) > 7 {
+			return s.Value[:7]
+		}
+	}
+
+	return ""
+}
+
 // getHashColorBullet return bullet with color from hash
 func getHashColorBullet(v string) string {
 	if len(v) > 6 {
@@ -118,7 +174,7 @@ func getHashColorBullet(v string) string {
 
 // printInfo formats and prints info record
 func printInfo(size int, name, value string) {
-	name = name + ":"
+	name += ":"
 	size++
 
 	if value == "" {
@@ -131,16 +187,3 @@ func printInfo(size int, name, value string) {
 }
 
 // ////////////////////////////////////////////////////////////////////////////////// //
-
-// getMaxSize returns max package name size
-func (p Pkgs) getMaxSize() int {
-	size := 0
-
-	for _, pkg := range p {
-		if len(pkg.Name) > size {
-			size = len(pkg.Name)
-		}
-	}
-
-	return size
-}
