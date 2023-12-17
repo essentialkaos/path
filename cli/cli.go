@@ -227,11 +227,11 @@ func printCompletion() int {
 
 	switch options.GetS(OPT_COMPLETION) {
 	case "bash":
-		fmt.Printf(bash.Generate(info, "path"))
+		fmt.Print(bash.Generate(info, "path"))
 	case "fish":
-		fmt.Printf(fish.Generate(info, "path"))
+		fmt.Print(fish.Generate(info, "path"))
 	case "zsh":
-		fmt.Printf(zsh.Generate(info, optMap, "path"))
+		fmt.Print(zsh.Generate(info, optMap, "path"))
 	default:
 		return 1
 	}
