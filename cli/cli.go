@@ -14,8 +14,8 @@ import (
 	"strings"
 
 	"github.com/essentialkaos/ek/v12/fmtc"
-	"github.com/essentialkaos/ek/v12/fsutil"
 	"github.com/essentialkaos/ek/v12/options"
+	"github.com/essentialkaos/ek/v12/terminal/tty"
 	"github.com/essentialkaos/ek/v12/usage"
 	"github.com/essentialkaos/ek/v12/usage/completion/bash"
 	"github.com/essentialkaos/ek/v12/usage/completion/fish"
@@ -30,7 +30,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "0.0.5"
+	VER  = "0.0.6"
 	DESC = "Dead simple tool for working with paths"
 )
 
@@ -143,24 +143,7 @@ func Run(gitRev string, gomod []byte) {
 
 // preConfigureUI preconfigures UI based on information about user terminal
 func preConfigureUI() {
-	term := os.Getenv("TERM")
-
-	fmtc.DisableColors = true
-
-	if term != "" {
-		switch {
-		case strings.Contains(term, "xterm"),
-			strings.Contains(term, "color"),
-			term == "screen":
-			fmtc.DisableColors = false
-		}
-	}
-
-	if !fsutil.IsCharacterDevice("/dev/stdout") && os.Getenv("FAKETTY") == "" {
-		fmtc.DisableColors = true
-	}
-
-	if os.Getenv("NO_COLOR") != "" {
+	if !tty.IsTTY() {
 		fmtc.DisableColors = true
 	}
 }
@@ -244,11 +227,11 @@ func printCompletion() int {
 
 	switch options.GetS(OPT_COMPLETION) {
 	case "bash":
-		fmt.Printf(bash.Generate(info, "path"))
+		fmt.Print(bash.Generate(info, "path"))
 	case "fish":
-		fmt.Printf(fish.Generate(info, "path"))
+		fmt.Print(fish.Generate(info, "path"))
 	case "zsh":
-		fmt.Printf(zsh.Generate(info, optMap, "path"))
+		fmt.Print(zsh.Generate(info, optMap, "path"))
 	default:
 		return 1
 	}
@@ -270,26 +253,26 @@ func printMan() {
 func genUsage() *usage.Info {
 	info := usage.NewInfo()
 
-	info.AddCommand(CMD_BASENAME, "Strip directory and suffix from filenames")
-	info.AddCommand(CMD_DIRNAME, "Strip last component from file name")
-	info.AddCommand(CMD_READLINK, "Print resolved symbolic links or canonical file names")
-	info.AddCommand(CMD_CLEAN, "Print shortest path name equivalent to path by purely lexical processing")
-	info.AddCommand(CMD_COMPACT, "Converts path to compact representation")
-	info.AddCommand(CMD_ABS, "Print absolute representation of path")
-	info.AddCommand(CMD_EXT, "Print file extension")
-	info.AddCommand(CMD_MATCH, "Filter given path using pattern", "pattern")
-	info.AddCommand(CMD_JOIN, "Join path elements", "root")
+	info.AddCommand(CMD_BASENAME, "Strip directory and suffix from filenames", "?path")
+	info.AddCommand(CMD_DIRNAME, "Strip last component from file name", "?path")
+	info.AddCommand(CMD_READLINK, "Print resolved symbolic links or canonical file names", "?path")
+	info.AddCommand(CMD_CLEAN, "Print shortest path name equivalent to path by purely lexical processing", "?path")
+	info.AddCommand(CMD_COMPACT, "Converts path to compact representation", "?path")
+	info.AddCommand(CMD_ABS, "Print absolute representation of path", "?path")
+	info.AddCommand(CMD_EXT, "Print file extension", "?path")
+	info.AddCommand(CMD_MATCH, "Filter given path using pattern", "pattern", "?path")
+	info.AddCommand(CMD_JOIN, "Join path elements", "root", "?path")
 
-	info.AddCommand(CMD_ADD_PREFIX, "Add the substring at the beginning", "prefix")
-	info.AddCommand(CMD_DEL_PREFIX, "Remove the substring at the beginning", "prefix")
-	info.AddCommand(CMD_ADD_SUFFIX, "Add the substring at the end", "suffix")
-	info.AddCommand(CMD_DEL_SUFFIX, "Remove the substring at the end", "suffix")
-	info.AddCommand(CMD_EXCLUDE, "Exclude part of the string", "substr")
+	info.AddCommand(CMD_ADD_PREFIX, "Add the substring at the beginning", "prefix", "?path")
+	info.AddCommand(CMD_DEL_PREFIX, "Remove the substring at the beginning", "prefix", "?path")
+	info.AddCommand(CMD_ADD_SUFFIX, "Add the substring at the end", "suffix", "?path")
+	info.AddCommand(CMD_DEL_SUFFIX, "Remove the substring at the end", "suffix", "?path")
+	info.AddCommand(CMD_EXCLUDE, "Exclude part of the string", "substr", "?path")
 
-	info.AddCommand(CMD_IS_ABS, "Check if given path is absolute")
-	info.AddCommand(CMD_IS_LOCAL, "Check if given path is local")
-	info.AddCommand(CMD_IS_SAFE, "Check if given path is safe")
-	info.AddCommand(CMD_IS_MATCH, "Check if given path is match to pattern", "pattern")
+	info.AddCommand(CMD_IS_ABS, "Check if given path is absolute", "?path")
+	info.AddCommand(CMD_IS_LOCAL, "Check if given path is local", "?path")
+	info.AddCommand(CMD_IS_SAFE, "Check if given path is safe", "?path")
+	info.AddCommand(CMD_IS_MATCH, "Check if given path is match to pattern", "pattern", "?path")
 
 	info.AddOption(OPT_ZERO, "End each output line with NUL, not newline")
 	info.AddOption(OPT_SPACE, "End each output line with space, not newline")
