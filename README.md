@@ -36,12 +36,12 @@ find . -mindepth 1 -maxdepth 1 -type d | path basename
 
 Also, it works MUCH faster:
 
-```bash
-git clone https://github.com/kubernetes/kubernetes.git --depth=1
+```
+$ git clone https://github.com/kubernetes/kubernetes.git --depth=1
 
-cd kubernetes
+$ cd kubernetes
 
-hyperfine 'find . -iname *.go -print0 | xargs -0 -n1 -- basename' 'find . -iname *.go | path basename'
+$ hyperfine 'find . -iname *.go -print0 | xargs -0 -n1 -- basename' 'find . -iname *.go | path basename'
 
 Benchmark 1: find . -iname *.go -print0 | xargs -0 -n1 -- basename
   Time (mean ± σ):     12.621 s ±  0.077 s    [User: 5.871 s, System: 7.043 s]
