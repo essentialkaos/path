@@ -37,13 +37,23 @@ find . -mindepth 1 -maxdepth 1 -type d | path basename
 Also, it works MUCH faster:
 
 ```bash
-time find . -iname '*.go' -print0 | xargs -0 -n1 -- basename
-# find . -iname '*.go' -print0  0.07s user 0.12s system 4% cpu 4.255 total
-# xargs -0 -n1 -- basename  2.59s user 2.74s system 102% cpu 5.195 total
+git clone https://github.com/kubernetes/kubernetes.git --depth=1
 
-time find . -iname '*.go' | path basename
-# find . -iname '*.go'  0.08s user 0.09s system 99% cpu 0.174 total
-# path basename  0.02s user 0.02s system 21% cpu 0.207 total
+cd kubernetes
+
+hyperfine 'find . -iname *.go -print0 | xargs -0 -n1 -- basename' 'find . -iname *.go | path basename'
+
+Benchmark 1: find . -iname *.go -print0 | xargs -0 -n1 -- basename
+  Time (mean ± σ):     12.621 s ±  0.077 s    [User: 5.871 s, System: 7.043 s]
+  Range (min … max):   12.512 s … 12.745 s    10 runs
+
+Benchmark 2: find . -iname *.go | path basename
+  Time (mean ± σ):     106.5 ms ±   1.5 ms    [User: 59.8 ms, System: 60.4 ms]
+  Range (min … max):   104.1 ms … 111.1 ms    28 runs
+
+Summary
+  find . -iname *.go | path basename ran
+  118.45 ± 1.80 times faster than find . -iname *.go -print0 | xargs -0 -n1 -- basename
 ```
 
 ### Installation
