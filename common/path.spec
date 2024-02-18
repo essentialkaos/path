@@ -10,7 +10,7 @@
 
 Summary:        Dead simple tool for working with paths
 Name:           path
-Version:        0.0.6
+Version:        1.0.0
 Release:        0%{?dist}
 Group:          Applications/System
 License:        Apache License, Version 2.0
@@ -22,7 +22,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  golang >= 1.20
+BuildRequires:  golang >= 1.21
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -101,6 +101,11 @@ fi
 ################################################################################
 
 %changelog
+* Sun Feb 18 2024 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-0
+- Added dirn command
+- Code refactoring
+- Dependencies update
+
 * Sun Dec 17 2023 Anton Novojilov <andy@essentialkaos.com> - 0.0.6-0
 - Improved verbose version info output
 - Code refactoring

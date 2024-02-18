@@ -30,7 +30,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "0.0.6"
+	VER  = "1.0.0"
 	DESC = "Dead simple tool for working with paths"
 )
 
@@ -53,15 +53,16 @@ const (
 // ////////////////////////////////////////////////////////////////////////////////// //
 
 const (
-	CMD_BASENAME = "base"
-	CMD_DIRNAME  = "dir"
-	CMD_READLINK = "link"
-	CMD_CLEAN    = "clean"
-	CMD_COMPACT  = "compact"
-	CMD_EXT      = "ext"
-	CMD_ABS      = "abs"
-	CMD_MATCH    = "match"
-	CMD_JOIN     = "join"
+	CMD_BASENAME    = "base"
+	CMD_DIRNAME     = "dir"
+	CMD_DIRNAME_NUM = "dirn"
+	CMD_READLINK    = "link"
+	CMD_CLEAN       = "clean"
+	CMD_COMPACT     = "compact"
+	CMD_EXT         = "ext"
+	CMD_ABS         = "abs"
+	CMD_MATCH       = "match"
+	CMD_JOIN        = "join"
 
 	CMD_ADD_PREFIX = "add-prefix"
 	CMD_DEL_PREFIX = "del-prefix"
@@ -167,6 +168,8 @@ func process(args options.Arguments) (error, bool) {
 		return cmdBasename(cmdArgs)
 	case CMD_DIRNAME, "dirname":
 		return cmdDirname(cmdArgs)
+	case CMD_DIRNAME_NUM:
+		return cmdDirnameNum(cmdArgs)
 	case CMD_READLINK, "readlink":
 		return cmdReadlink(cmdArgs)
 	case CMD_CLEAN:
@@ -255,6 +258,7 @@ func genUsage() *usage.Info {
 
 	info.AddCommand(CMD_BASENAME, "Strip directory and suffix from filenames", "?path")
 	info.AddCommand(CMD_DIRNAME, "Strip last component from file name", "?path")
+	info.AddCommand(CMD_DIRNAME_NUM, "Return N elements from path", "num", "?path")
 	info.AddCommand(CMD_READLINK, "Print resolved symbolic links or canonical file names", "?path")
 	info.AddCommand(CMD_CLEAN, "Print shortest path name equivalent to path by purely lexical processing", "?path")
 	info.AddCommand(CMD_COMPACT, "Converts path to compact representation", "?path")

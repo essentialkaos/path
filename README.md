@@ -115,24 +115,25 @@ Usage: path {options} {command}
 
 Commands
 
-  base                 Strip directory and suffix from filenames
-  dir                  Strip last component from file name
-  link                 Print resolved symbolic links or canonical file names
-  clean                Print shortest path name equivalent to path by purely lexical processing
-  compact              Converts path to compact representation
-  abs                  Print absolute representation of path
-  ext                  Print file extension
-  match pattern        Filter given path using pattern
-  join root            Join path elements
-  add-prefix prefix    Add the substring at the beginning
-  del-prefix prefix    Remove the substring at the beginning
-  add-suffix suffix    Add the substring at the end
-  del-suffix suffix    Remove the substring at the end
-  exclude substr       Exclude part of the string
-  is-abs               Check if given path is absolute
-  is-local             Check if given path is local
-  is-safe              Check if given path is safe
-  is-match pattern     Check if given path is match to pattern
+  base path                 Strip directory and suffix from filenames
+  dir path                  Strip last component from file name
+  dirn num path             Return N elements from path
+  link path                 Print resolved symbolic links or canonical file names
+  clean path                Print shortest path name equivalent to path by purely lexical processing
+  compact path              Converts path to compact representation
+  abs path                  Print absolute representation of path
+  ext path                  Print file extension
+  match pattern path        Filter given path using pattern
+  join root path            Join path elements
+  add-prefix prefix path    Add the substring at the beginning
+  del-prefix prefix path    Remove the substring at the beginning
+  add-suffix suffix path    Add the substring at the end
+  del-suffix suffix path    Remove the substring at the end
+  exclude substr path       Exclude part of the string
+  is-abs path               Check if given path is absolute
+  is-local path             Check if given path is local
+  is-safe path              Check if given path is safe
+  is-match pattern path     Check if given path is match to pattern
 
 Options
 

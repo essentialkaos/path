@@ -12,6 +12,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/essentialkaos/ek/v12/fsutil"
@@ -57,6 +58,35 @@ func cmdDirname(args options.Arguments) (error, bool) {
 
 	for _, item := range input {
 		result = append(result, path.Dir(item))
+	}
+
+	if len(result) == 0 {
+		return err, false
+	}
+
+	fmt.Println(strings.Join(result, getSeparator()))
+
+	return nil, true
+}
+
+// cmdDirnameNum is handler for "dirn" command
+func cmdDirnameNum(args options.Arguments) (error, bool) {
+	var result []string
+
+	input, err := getInputData(args)
+
+	if err != nil {
+		return err, false
+	}
+
+	num, err := strconv.Atoi(input[0])
+
+	if err != nil {
+		return err, false
+	}
+
+	for _, item := range input[1:] {
+		result = append(result, path.DirN(item, num))
 	}
 
 	if len(result) == 0 {
