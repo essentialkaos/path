@@ -37,6 +37,12 @@ command "path dirname /home/user/john/file.txt" "Check dirname command"
 
 ################################################################################
 
+command "path dirn 2 /home/user/john/file.txt" "Check dir command"
+  exit 0
+  output-contains "/home/user"
+
+################################################################################
+
 command "ln -sf path.recipe recipe.link" "Create link for the test"
   exit 0
 
