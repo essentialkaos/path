@@ -15,14 +15,14 @@ import (
 
 	"github.com/essentialkaos/ek/v12/fmtc"
 	"github.com/essentialkaos/ek/v12/options"
+	"github.com/essentialkaos/ek/v12/support"
+	"github.com/essentialkaos/ek/v12/support/deps"
 	"github.com/essentialkaos/ek/v12/terminal/tty"
 	"github.com/essentialkaos/ek/v12/usage"
 	"github.com/essentialkaos/ek/v12/usage/completion/bash"
 	"github.com/essentialkaos/ek/v12/usage/completion/fish"
 	"github.com/essentialkaos/ek/v12/usage/completion/zsh"
 	"github.com/essentialkaos/ek/v12/usage/man"
-
-	"github.com/essentialkaos/path/cli/support"
 )
 
 // ////////////////////////////////////////////////////////////////////////////////// //
@@ -30,7 +30,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "1.0.0"
+	VER  = "1.0.1"
 	DESC = "Dead simple tool for working with paths"
 )
 
@@ -122,7 +122,10 @@ func Run(gitRev string, gomod []byte) {
 		genAbout(gitRev).Print(options.GetS(OPT_VER))
 		os.Exit(0)
 	case options.GetB(OPT_VERB_VER):
-		support.Print(APP, VER, gitRev, gomod)
+		support.Collect(APP, VER).
+			WithRevision(gitRev).
+			WithDeps(deps.Extract(gomod)).
+			Print()
 		os.Exit(0)
 	case options.GetB(OPT_HELP) || len(args) == 0:
 		genUsage().Print()
