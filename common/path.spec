@@ -10,7 +10,7 @@
 
 Summary:        Dead simple tool for working with paths
 Name:           path
-Version:        1.0.0
+Version:        1.0.1
 Release:        0%{?dist}
 Group:          Applications/System
 License:        Apache License, Version 2.0
@@ -101,6 +101,11 @@ fi
 ################################################################################
 
 %changelog
+* Thu Mar 28 2024 Anton Novojilov <andy@essentialkaos.com> - 1.0.1-0
+- Improved support information gathering
+- Code refactoring
+- Dependencies update
+
 * Sun Feb 18 2024 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-0
 - Added dirn command
 - Code refactoring
