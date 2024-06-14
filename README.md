@@ -1,4 +1,5 @@
-<p align="center"><a href="#readme"><img src="https://gh.kaos.st/path.svg"/></a></p>
+<p align="center"><a href="#readme"><img src=".github/images/card.svg"/>
+</a></p>
 
 <p align="center">
   <a href="https://kaos.sh/r/path"><img src="https://kaos.sh/r/path.svg" alt="GoReportCard" /></a>
@@ -6,7 +7,7 @@
   <a href="https://kaos.sh/b/path"><img src="https://kaos.sh/b/ac5eb5c7-1a0d-4223-884c-f99d4efaf77a.svg" alt="Codebeat badge" /></a>
   <a href="https://kaos.sh/w/path/ci"><img src="https://kaos.sh/w/path/ci.svg" alt="GitHub Actions CI Status" /></a>
   <a href="https://kaos.sh/w/path/codeql"><img src="https://kaos.sh/w/path/codeql.svg" alt="GitHub Actions CodeQL Status" /></a>
-  <a href="#license"><img src="https://gh.kaos.st/apache2.svg"></a>
+  <a href="#license"><img src=".github/images/license.svg"/></a>
 </p>
 
 <p align="center"><a href="#installation">Installation</a> • <a href="#command-line-completion">Command-line completion</a> • <a href="#man-documentation">Man documentation</a> • <a href="#usage">Usage</a> • <a href="#ci-status">CI Status</a> • <a href="#contributing">Contributing</a> • <a href="#license">License</a></p>
@@ -110,7 +111,7 @@ path --generate-man | sudo gzip > /usr/share/man/man1/path.1.gz
 
 ### Usage
 
-<img src=".github/images/usage.svg" />
+<p align="center"><img src=".github/images/usage.svg"/></p>
 
 ### CI Status
 
