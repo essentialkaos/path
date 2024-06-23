@@ -2,7 +2,6 @@
 </a></p>
 
 <p align="center">
-  <a href="https://kaos.sh/r/path"><img src="https://kaos.sh/r/path.svg" alt="GoReportCard" /></a>
   <a href="https://kaos.sh/l/path"><img src="https://kaos.sh/l/6d6a56ab8cf3884d8523.svg" alt="Code Climate Maintainability" /></a>
   <a href="https://kaos.sh/b/path"><img src="https://kaos.sh/b/ac5eb5c7-1a0d-4223-884c-f99d4efaf77a.svg" alt="Codebeat badge" /></a>
   <a href="https://kaos.sh/w/path/ci"><img src="https://kaos.sh/w/path/ci.svg" alt="GitHub Actions CI Status" /></a>
@@ -111,7 +110,7 @@ path --generate-man | sudo gzip > /usr/share/man/man1/path.1.gz
 
 ### Usage
 
-<p align="center"><img src=".github/images/usage.svg"/></p>
+<img src=".github/images/usage.svg"/>
 
 ### CI Status
 
