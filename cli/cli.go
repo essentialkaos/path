@@ -17,6 +17,7 @@ import (
 	"github.com/essentialkaos/ek/v12/options"
 	"github.com/essentialkaos/ek/v12/support"
 	"github.com/essentialkaos/ek/v12/support/deps"
+	"github.com/essentialkaos/ek/v12/terminal"
 	"github.com/essentialkaos/ek/v12/terminal/tty"
 	"github.com/essentialkaos/ek/v12/usage"
 	"github.com/essentialkaos/ek/v12/usage/completion/bash"
@@ -30,7 +31,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "1.0.1"
+	VER  = "1.0.2"
 	DESC = "Dead simple tool for working with paths"
 )
 
@@ -105,8 +106,9 @@ func Run(gitRev string, gomod []byte) {
 
 	args, errs := options.Parse(optMap)
 
-	if len(errs) != 0 {
-		printError(errs[0].Error())
+	if !errs.IsEmpty() {
+		terminal.Error("Options parsing errors:")
+		terminal.Error(errs.String())
 		os.Exit(1)
 	}
 
@@ -218,11 +220,7 @@ func printError(f string, a ...interface{}) {
 		return
 	}
 
-	if len(a) == 0 {
-		fmtc.Fprintln(os.Stderr, "{r}"+f+"{!}")
-	} else {
-		fmtc.Fprintf(os.Stderr, "{r}"+f+"{!}\n", a...)
-	}
+	terminal.Error(f, a...)
 }
 
 // ////////////////////////////////////////////////////////////////////////////////// //
@@ -233,11 +231,11 @@ func printCompletion() int {
 
 	switch options.GetS(OPT_COMPLETION) {
 	case "bash":
-		fmt.Print(bash.Generate(info, "path"))
+		fmt.Print(bash.Generate(info, APP))
 	case "fish":
-		fmt.Print(fish.Generate(info, "path"))
+		fmt.Print(fish.Generate(info, APP))
 	case "zsh":
-		fmt.Print(zsh.Generate(info, optMap, "path"))
+		fmt.Print(zsh.Generate(info, optMap, APP))
 	default:
 		return 1
 	}
@@ -247,12 +245,7 @@ func printCompletion() int {
 
 // printMan prints man page
 func printMan() {
-	fmt.Println(
-		man.Generate(
-			genUsage(),
-			genAbout(""),
-		),
-	)
+	fmt.Println(man.Generate(genUsage(), genAbout("")))
 }
 
 // genUsage generates usage info

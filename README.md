@@ -1,12 +1,12 @@
-<p align="center"><a href="#readme"><img src="https://gh.kaos.st/path.svg"/></a></p>
+<p align="center"><a href="#readme"><img src=".github/images/card.svg"/>
+</a></p>
 
 <p align="center">
-  <a href="https://kaos.sh/r/path"><img src="https://kaos.sh/r/path.svg" alt="GoReportCard" /></a>
   <a href="https://kaos.sh/l/path"><img src="https://kaos.sh/l/6d6a56ab8cf3884d8523.svg" alt="Code Climate Maintainability" /></a>
   <a href="https://kaos.sh/b/path"><img src="https://kaos.sh/b/ac5eb5c7-1a0d-4223-884c-f99d4efaf77a.svg" alt="Codebeat badge" /></a>
   <a href="https://kaos.sh/w/path/ci"><img src="https://kaos.sh/w/path/ci.svg" alt="GitHub Actions CI Status" /></a>
   <a href="https://kaos.sh/w/path/codeql"><img src="https://kaos.sh/w/path/codeql.svg" alt="GitHub Actions CodeQL Status" /></a>
-  <a href="#license"><img src="https://gh.kaos.st/apache2.svg"></a>
+  <a href="#license"><img src=".github/images/license.svg"/></a>
 </p>
 
 <p align="center"><a href="#installation">Installation</a> • <a href="#command-line-completion">Command-line completion</a> • <a href="#man-documentation">Man documentation</a> • <a href="#usage">Usage</a> • <a href="#ci-status">CI Status</a> • <a href="#contributing">Contributing</a> • <a href="#license">License</a></p>
@@ -110,57 +110,7 @@ path --generate-man | sudo gzip > /usr/share/man/man1/path.1.gz
 
 ### Usage
 
-```
-Usage: path {options} {command}
-
-Commands
-
-  base path                 Strip directory and suffix from filenames
-  dir path                  Strip last component from file name
-  dirn num path             Return N elements from path
-  link path                 Print resolved symbolic links or canonical file names
-  clean path                Print shortest path name equivalent to path by purely lexical processing
-  compact path              Converts path to compact representation
-  abs path                  Print absolute representation of path
-  ext path                  Print file extension
-  match pattern path        Filter given path using pattern
-  join root path            Join path elements
-  add-prefix prefix path    Add the substring at the beginning
-  del-prefix prefix path    Remove the substring at the beginning
-  add-suffix suffix path    Add the substring at the end
-  del-suffix suffix path    Remove the substring at the end
-  exclude substr path       Exclude part of the string
-  is-abs path               Check if given path is absolute
-  is-local path             Check if given path is local
-  is-safe path              Check if given path is safe
-  is-match pattern path     Check if given path is match to pattern
-
-Options
-
-  --zero, -z         End each output line with NUL, not newline
-  --space, -s        End each output line with space, not newline
-  --quiet, -q        Suppress all error messages
-  --no-color, -nc    Disable colors in output
-  --help, -h         Show this help message
-  --version, -v      Show version
-
-Examples
-
-  path base /path/to/file.txt
-  → file.txt
-
-  path dir /path/to/file.txt
-  → /path/to
-
-  path compact /very/long/path/to/some/file.txt
-  → /v/l/p/t/s/file.txt
-
-  ls -1 | path is-match '*.txt' && echo MATCH!
-  Check if all files in current directory is match to pattern
-
-  PATH_QUIET=1 path dir /path/to/file.txt
-  Run dir command in quiet mode enabled by environment variable
-```
+<img src=".github/images/usage.svg"/>
 
 ### CI Status
 
