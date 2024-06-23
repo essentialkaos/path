@@ -10,7 +10,7 @@
 
 Summary:        Dead simple tool for working with paths
 Name:           path
-Version:        1.0.1
+Version:        1.0.2
 Release:        0%{?dist}
 Group:          Applications/System
 License:        Apache License, Version 2.0
@@ -37,13 +37,15 @@ Dead simple tool for working with paths.
 %{crc_check}
 
 %setup -q
-
-%build
 if [[ ! -d "%{name}/vendor" ]] ; then
-  echo "This package requires vendored dependencies"
+  echo -e "----\nThis package requires vendored dependencies\n----"
+  exit 1
+elif [[ -f "%{name}/%{name}" ]] ; then
+  echo -e "----\nSources must not contain precompiled binaries\n----"
   exit 1
 fi
 
+%build
 pushd %{name}
   go build %{name}.go
   cp LICENSE ..
@@ -101,6 +103,10 @@ fi
 ################################################################################
 
 %changelog
+* Sun Jun 23 2024 Anton Novojilov <andy@essentialkaos.com> - 1.0.2-0
+- Code refactoring
+- Dependencies update
+
 * Thu Mar 28 2024 Anton Novojilov <andy@essentialkaos.com> - 1.0.1-0
 - Improved support information gathering
 - Code refactoring
