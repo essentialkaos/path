@@ -31,7 +31,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "1.0.2"
+	VER  = "1.0.3"
 	DESC = "Dead simple tool for working with paths"
 )
 
