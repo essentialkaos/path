@@ -34,7 +34,7 @@ find . -mindepth 1 -maxdepth 1 -type d -exec basename {}  \;
 find . -mindepth 1 -maxdepth 1 -type d | path basename
 ```
 
-Also, it works MUCH faster:
+Also, it works **MUCH** faster (~120x):
 
 ```
 $ git clone https://github.com/kubernetes/kubernetes.git --depth=1
@@ -60,17 +60,17 @@ Summary
 
 #### From source
 
-To build the `path` from scratch, make sure you have a working Go 1.22+ workspace (_[instructions](https://go.dev/doc/install)_), then:
+To build the `path` from scratch, make sure you have a working [Go 1.22+](https://github.com/essentialkaos/.github/blob/master/GO-VERSION-SUPPORT.md) workspace (_[instructions](https://go.dev/doc/install)_), then:
 
 ```
 go install github.com/essentialkaos/path@latest
 ```
 
-#### From [ESSENTIAL KAOS Public Repository](https://kaos.sh/kaos-repo) for EL 7/8/9
+#### From [ESSENTIAL KAOS Public Repository](https://kaos.sh/kaos-repo) for EL 8/9
 
 ```bash
-sudo yum install -y https://pkgs.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
-sudo yum install path
+sudo dnf install -y https://pkgs.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
+sudo dnf install path
 ```
 
 #### Prebuilt binaries

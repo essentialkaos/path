@@ -31,7 +31,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "1.0.3"
+	VER  = "1.1.0"
 	DESC = "Dead simple tool for working with paths"
 )
 
@@ -70,6 +70,7 @@ const (
 	CMD_ADD_SUFFIX = "add-suffix"
 	CMD_DEL_SUFFIX = "del-suffix"
 	CMD_EXCLUDE    = "exclude"
+	CMD_STRIP_EXT  = "strip-ext"
 
 	CMD_IS_ABS   = "is-abs"
 	CMD_IS_LOCAL = "is-local"
@@ -108,7 +109,7 @@ func Run(gitRev string, gomod []byte) {
 
 	if !errs.IsEmpty() {
 		terminal.Error("Options parsing errors:")
-		terminal.Error(errs.String())
+		terminal.Error(errs.Error("- "))
 		os.Exit(1)
 	}
 
@@ -200,6 +201,8 @@ func process(args options.Arguments) (error, bool) {
 		return cmdDelSuffix(cmdArgs)
 	case CMD_EXCLUDE:
 		return cmdExclude(cmdArgs)
+	case CMD_STRIP_EXT:
+		return cmdStripExt(cmdArgs)
 
 	case CMD_IS_ABS:
 		return cmdIsAbs(cmdArgs)
@@ -252,27 +255,28 @@ func printMan() {
 func genUsage() *usage.Info {
 	info := usage.NewInfo()
 
-	info.AddCommand(CMD_BASENAME, "Strip directory and suffix from filenames", "?path")
-	info.AddCommand(CMD_DIRNAME, "Strip last component from file name", "?path")
-	info.AddCommand(CMD_DIRNAME_NUM, "Return N elements from path", "num", "?path")
-	info.AddCommand(CMD_READLINK, "Print resolved symbolic links or canonical file names", "?path")
-	info.AddCommand(CMD_CLEAN, "Print shortest path name equivalent to path by purely lexical processing", "?path")
-	info.AddCommand(CMD_COMPACT, "Converts path to compact representation", "?path")
-	info.AddCommand(CMD_ABS, "Print absolute representation of path", "?path")
-	info.AddCommand(CMD_EXT, "Print file extension", "?path")
-	info.AddCommand(CMD_MATCH, "Filter given path using pattern", "pattern", "?path")
-	info.AddCommand(CMD_JOIN, "Join path elements", "root", "?path")
+	info.AddCommand(CMD_BASENAME, "Strip directory and suffix from filenames", "?path…")
+	info.AddCommand(CMD_DIRNAME, "Strip last component from file name", "?path…")
+	info.AddCommand(CMD_DIRNAME_NUM, "Return N elements from path", "num", "?path…")
+	info.AddCommand(CMD_READLINK, "Print resolved symbolic links or canonical file names", "?path…")
+	info.AddCommand(CMD_CLEAN, "Print shortest path name equivalent to path by purely lexical processing", "?path…")
+	info.AddCommand(CMD_COMPACT, "Converts path to compact representation", "?path…")
+	info.AddCommand(CMD_ABS, "Print absolute representation of path", "?path…")
+	info.AddCommand(CMD_EXT, "Print file extension", "?path…")
+	info.AddCommand(CMD_MATCH, "Filter given path using pattern", "pattern", "?path…")
+	info.AddCommand(CMD_JOIN, "Join path elements", "root", "?path…")
 
-	info.AddCommand(CMD_ADD_PREFIX, "Add the substring at the beginning", "prefix", "?path")
-	info.AddCommand(CMD_DEL_PREFIX, "Remove the substring at the beginning", "prefix", "?path")
-	info.AddCommand(CMD_ADD_SUFFIX, "Add the substring at the end", "suffix", "?path")
-	info.AddCommand(CMD_DEL_SUFFIX, "Remove the substring at the end", "suffix", "?path")
-	info.AddCommand(CMD_EXCLUDE, "Exclude part of the string", "substr", "?path")
+	info.AddCommand(CMD_ADD_PREFIX, "Add the substring at the beginning", "prefix", "?path…")
+	info.AddCommand(CMD_DEL_PREFIX, "Remove the substring at the beginning", "prefix", "?path…")
+	info.AddCommand(CMD_ADD_SUFFIX, "Add the substring at the end", "suffix", "?path…")
+	info.AddCommand(CMD_DEL_SUFFIX, "Remove the substring at the end", "suffix", "?path…")
+	info.AddCommand(CMD_EXCLUDE, "Exclude part of the string", "substr", "?path…")
+	info.AddCommand(CMD_STRIP_EXT, "Remove file extension", "?path…")
 
-	info.AddCommand(CMD_IS_ABS, "Check if given path is absolute", "?path")
-	info.AddCommand(CMD_IS_LOCAL, "Check if given path is local", "?path")
-	info.AddCommand(CMD_IS_SAFE, "Check if given path is safe", "?path")
-	info.AddCommand(CMD_IS_MATCH, "Check if given path is match to pattern", "pattern", "?path")
+	info.AddCommand(CMD_IS_ABS, "Check if given path is absolute", "?path…")
+	info.AddCommand(CMD_IS_LOCAL, "Check if given path is local", "?path…")
+	info.AddCommand(CMD_IS_SAFE, "Check if given path is safe", "?path…")
+	info.AddCommand(CMD_IS_MATCH, "Check if given path is match to pattern", "pattern", "?path…")
 
 	info.AddOption(OPT_ZERO, "End each output line with NUL, not newline")
 	info.AddOption(OPT_SPACE, "End each output line with space, not newline")
