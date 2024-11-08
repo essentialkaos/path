@@ -10,7 +10,7 @@
 
 Summary:        Dead simple tool for working with paths
 Name:           path
-Version:        1.0.3
+Version:        1.1.0
 Release:        0%{?dist}
 Group:          Applications/System
 License:        Apache License, Version 2.0
@@ -22,7 +22,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  golang >= 1.22
+BuildRequires:  golang >= 1.23
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -103,6 +103,11 @@ fi
 ################################################################################
 
 %changelog
+* Fri Nov 08 2024 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
+- Added 'strip-ext' command
+- Code refactoring
+- Dependencies update
+
 * Tue Sep 24 2024 Anton Novojilov <andy@essentialkaos.com> - 1.0.3-0
 - Dependencies update
 
