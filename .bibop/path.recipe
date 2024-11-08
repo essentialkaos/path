@@ -117,6 +117,12 @@ command "path -s exclude _small john_small.jpg bob_small.jpg jack_small.jpg"
 
 ################################################################################
 
+command "path -s strip-ext john.jpg bob.png jack.TIFF"
+  exit 0
+  output-contains "john bob jack"
+
+################################################################################
+
 command "path is-abs /home/user/bob/file.txt" "Check is-abs command"
   exit 0
 
