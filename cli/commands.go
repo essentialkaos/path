@@ -435,6 +435,35 @@ func cmdExclude(args options.Arguments) (error, bool) {
 	return nil, true
 }
 
+// cmdStripExt is handler for "strip-ext" command
+func cmdStripExt(args options.Arguments) (error, bool) {
+	var result []string
+
+	input, err := getInputData(args)
+
+	if err != nil {
+		return err, false
+	}
+
+	for _, item := range input {
+		ext := path.Ext(item)
+
+		if ext != "" {
+			result = append(result, strings.TrimSuffix(item, ext))
+		} else {
+			result = append(result, item)
+		}
+	}
+
+	if len(result) == 0 {
+		return err, false
+	}
+
+	fmt.Println(strings.Join(result, getSeparator()))
+
+	return nil, true
+}
+
 // cmdIsAbs is handler for "is-abs" command
 func cmdIsAbs(args options.Arguments) (error, bool) {
 	input, err := getInputData(args)

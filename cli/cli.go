@@ -31,7 +31,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "1.0.3"
+	VER  = "1.1.0"
 	DESC = "Dead simple tool for working with paths"
 )
 
@@ -70,6 +70,7 @@ const (
 	CMD_ADD_SUFFIX = "add-suffix"
 	CMD_DEL_SUFFIX = "del-suffix"
 	CMD_EXCLUDE    = "exclude"
+	CMD_STRIP_EXT  = "strip-ext"
 
 	CMD_IS_ABS   = "is-abs"
 	CMD_IS_LOCAL = "is-local"
@@ -200,6 +201,8 @@ func process(args options.Arguments) (error, bool) {
 		return cmdDelSuffix(cmdArgs)
 	case CMD_EXCLUDE:
 		return cmdExclude(cmdArgs)
+	case CMD_STRIP_EXT:
+		return cmdStripExt(cmdArgs)
 
 	case CMD_IS_ABS:
 		return cmdIsAbs(cmdArgs)
@@ -268,6 +271,7 @@ func genUsage() *usage.Info {
 	info.AddCommand(CMD_ADD_SUFFIX, "Add the substring at the end", "suffix", "?path")
 	info.AddCommand(CMD_DEL_SUFFIX, "Remove the substring at the end", "suffix", "?path")
 	info.AddCommand(CMD_EXCLUDE, "Exclude part of the string", "substr", "?path")
+	info.AddCommand(CMD_STRIP_EXT, "Remove file extension", "?path")
 
 	info.AddCommand(CMD_IS_ABS, "Check if given path is absolute", "?path")
 	info.AddCommand(CMD_IS_LOCAL, "Check if given path is local", "?path")
