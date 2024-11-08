@@ -57,27 +57,27 @@
 
   <text x="12" y="60"><tspan class="BB">Usage:</tspan> <tspan class="BB c">path</tspan> <tspan class="g">{options}</tspan> <tspan class="y">{command}</tspan></text>
   <text x="12" y="100"><tspan class="BB">Commands</tspan></text>
-  <text x="12" y="140">  <tspan class="y">base</tspan> <tspan class="d">path</tspan> <tspan class="d">...............</tspan> Strip directory and suffix from filenames</text>
-  <text x="12" y="160">  <tspan class="y">dir</tspan> <tspan class="d">path</tspan> <tspan class="d">................</tspan> Strip last component from file name</text>
-  <text x="12" y="180">  <tspan class="y">dirn</tspan> <tspan class="s">num</tspan> <tspan class="d">path</tspan> <tspan class="d">...........</tspan> Return N elements from path</text>
-  <text x="12" y="200">  <tspan class="y">link</tspan> <tspan class="d">path</tspan> <tspan class="d">...............</tspan> Print resolved symbolic links or canonical file names</text>
-  <text x="12" y="220">  <tspan class="y">clean</tspan> <tspan class="d">path</tspan> <tspan class="d">..............</tspan> Print shortest path name equivalent to path by purely</text>
-  <text x="12" y="240">                            lexical processing</text>
-  <text x="12" y="260">  <tspan class="y">compact</tspan> <tspan class="d">path</tspan> <tspan class="d">............</tspan> Converts path to compact representation</text>
-  <text x="12" y="280">  <tspan class="y">abs</tspan> <tspan class="d">path</tspan> <tspan class="d">................</tspan> Print absolute representation of path</text>
-  <text x="12" y="300">  <tspan class="y">ext</tspan> <tspan class="d">path</tspan> <tspan class="d">................</tspan> Print file extension</text>
-  <text x="12" y="320">  <tspan class="y">match</tspan> <tspan class="s">pattern</tspan> <tspan class="d">path</tspan> <tspan class="d">......</tspan> Filter given path using pattern</text>
-  <text x="12" y="340">  <tspan class="y">join</tspan> <tspan class="s">root</tspan> <tspan class="d">path</tspan> <tspan class="d">..........</tspan> Join path elements</text>
-  <text x="12" y="360">  <tspan class="y">add-prefix</tspan> <tspan class="s">prefix</tspan> <tspan class="d">path</tspan> <tspan class="d">..</tspan> Add the substring at the beginning</text>
-  <text x="12" y="380">  <tspan class="y">del-prefix</tspan> <tspan class="s">prefix</tspan> <tspan class="d">path</tspan> <tspan class="d">..</tspan> Remove the substring at the beginning</text>
-  <text x="12" y="400">  <tspan class="y">add-suffix</tspan> <tspan class="s">suffix</tspan> <tspan class="d">path</tspan> <tspan class="d">..</tspan> Add the substring at the end</text>
-  <text x="12" y="420">  <tspan class="y">del-suffix</tspan> <tspan class="s">suffix</tspan> <tspan class="d">path</tspan> <tspan class="d">..</tspan> Remove the substring at the end</text>
-  <text x="12" y="440">  <tspan class="y">exclude</tspan> <tspan class="s">substr</tspan> <tspan class="d">path</tspan> <tspan class="d">.....</tspan> Exclude part of the string</text>
-  <text x="12" y="460">  <tspan class="y">strip-ext</tspan> <tspan class="d">path</tspan> <tspan class="d">..........</tspan> Remove file extension</text>
-  <text x="12" y="480">  <tspan class="y">is-abs</tspan> <tspan class="d">path</tspan> <tspan class="d">.............</tspan> Check if given path is absolute</text>
-  <text x="12" y="500">  <tspan class="y">is-local</tspan> <tspan class="d">path</tspan> <tspan class="d">...........</tspan> Check if given path is local</text>
-  <text x="12" y="520">  <tspan class="y">is-safe</tspan> <tspan class="d">path</tspan> <tspan class="d">............</tspan> Check if given path is safe</text>
-  <text x="12" y="540">  <tspan class="y">is-match</tspan> <tspan class="s">pattern</tspan> <tspan class="d">path</tspan> <tspan class="d">...</tspan> Check if given path is match to pattern</text>
+  <text x="12" y="140">  <tspan class="y">base</tspan> <tspan class="d">path…</tspan> <tspan class="d">...............</tspan> Strip directory and suffix from filenames</text>
+  <text x="12" y="160">  <tspan class="y">dir</tspan> <tspan class="d">path…</tspan> <tspan class="d">................</tspan> Strip last component from file name</text>
+  <text x="12" y="180">  <tspan class="y">dirn</tspan> <tspan class="s">num</tspan> <tspan class="d">path…</tspan> <tspan class="d">...........</tspan> Return N elements from path</text>
+  <text x="12" y="200">  <tspan class="y">link</tspan> <tspan class="d">path…</tspan> <tspan class="d">...............</tspan> Print resolved symbolic links or canonical file names</text>
+  <text x="12" y="220">  <tspan class="y">clean</tspan> <tspan class="d">path…</tspan> <tspan class="d">..............</tspan> Print shortest path name equivalent to path by purely</text>
+  <text x="12" y="240">                             lexical processing</text>
+  <text x="12" y="260">  <tspan class="y">compact</tspan> <tspan class="d">path…</tspan> <tspan class="d">............</tspan> Converts path to compact representation</text>
+  <text x="12" y="280">  <tspan class="y">abs</tspan> <tspan class="d">path…</tspan> <tspan class="d">................</tspan> Print absolute representation of path</text>
+  <text x="12" y="300">  <tspan class="y">ext</tspan> <tspan class="d">path…</tspan> <tspan class="d">................</tspan> Print file extension</text>
+  <text x="12" y="320">  <tspan class="y">match</tspan> <tspan class="s">pattern</tspan> <tspan class="d">path…</tspan> <tspan class="d">......</tspan> Filter given path using pattern</text>
+  <text x="12" y="340">  <tspan class="y">join</tspan> <tspan class="s">root</tspan> <tspan class="d">path…</tspan> <tspan class="d">..........</tspan> Join path elements</text>
+  <text x="12" y="360">  <tspan class="y">add-prefix</tspan> <tspan class="s">prefix</tspan> <tspan class="d">path…</tspan> <tspan class="d">..</tspan> Add the substring at the beginning</text>
+  <text x="12" y="380">  <tspan class="y">del-prefix</tspan> <tspan class="s">prefix</tspan> <tspan class="d">path…</tspan> <tspan class="d">..</tspan> Remove the substring at the beginning</text>
+  <text x="12" y="400">  <tspan class="y">add-suffix</tspan> <tspan class="s">suffix</tspan> <tspan class="d">path…</tspan> <tspan class="d">..</tspan> Add the substring at the end</text>
+  <text x="12" y="420">  <tspan class="y">del-suffix</tspan> <tspan class="s">suffix</tspan> <tspan class="d">path…</tspan> <tspan class="d">..</tspan> Remove the substring at the end</text>
+  <text x="12" y="440">  <tspan class="y">exclude</tspan> <tspan class="s">substr</tspan> <tspan class="d">path…</tspan> <tspan class="d">.....</tspan> Exclude part of the string</text>
+  <text x="12" y="460">  <tspan class="y">strip-ext</tspan> <tspan class="d">path…</tspan> <tspan class="d">..........</tspan> Remove file extension</text>
+  <text x="12" y="480">  <tspan class="y">is-abs</tspan> <tspan class="d">path…</tspan> <tspan class="d">.............</tspan> Check if given path is absolute</text>
+  <text x="12" y="500">  <tspan class="y">is-local</tspan> <tspan class="d">path…</tspan> <tspan class="d">...........</tspan> Check if given path is local</text>
+  <text x="12" y="520">  <tspan class="y">is-safe</tspan> <tspan class="d">path…</tspan> <tspan class="d">............</tspan> Check if given path is safe</text>
+  <text x="12" y="540">  <tspan class="y">is-match</tspan> <tspan class="s">pattern</tspan> <tspan class="d">path…</tspan> <tspan class="d">...</tspan> Check if given path is match to pattern</text>
   <text x="12" y="580"><tspan class="BB">Options</tspan></text>
   <text x="12" y="620">  <tspan class="g">--zero</tspan><tspan class="s">, </tspan><tspan class="g">-z</tspan> <tspan class="d">.......</tspan> End each output line with NUL, not newline</text>
   <text x="12" y="640">  <tspan class="g">--space</tspan><tspan class="s">, </tspan><tspan class="g">-s</tspan> <tspan class="d">......</tspan> End each output line with space, not newline</text>
