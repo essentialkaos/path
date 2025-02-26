@@ -2,7 +2,6 @@
 </a></p>
 
 <p align="center">
-  <a href="https://kaos.sh/l/path"><img src="https://kaos.sh/l/6d6a56ab8cf3884d8523.svg" alt="Code Climate Maintainability" /></a>
   <a href="https://kaos.sh/y/path"><img src="https://kaos.sh/y/cc438c3893ea48e58d8e3d935400e9e2.svg" alt="Codacy badge" /></a>
   <a href="https://kaos.sh/w/path/ci"><img src="https://kaos.sh/w/path/ci.svg" alt="GitHub Actions CI Status" /></a>
   <a href="https://kaos.sh/w/path/codeql"><img src="https://kaos.sh/w/path/codeql.svg" alt="GitHub Actions CodeQL Status" /></a>
