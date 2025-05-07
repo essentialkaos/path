@@ -31,7 +31,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "1.1.0"
+	VER  = "1.1.1"
 	DESC = "Dead simple tool for working with paths"
 )
 
@@ -97,6 +97,12 @@ var optMap = options.Map{
 // quietMode is quiet mode flag
 var quietMode bool
 
+// colorTagApp is app name color tag
+var colorTagApp string
+
+// colorTagVer is app version color tag
+var colorTagVer string
+
 // ////////////////////////////////////////////////////////////////////////////////// //
 
 // Run is main utility function
@@ -152,6 +158,13 @@ func Run(gitRev string, gomod []byte) {
 func preConfigureUI() {
 	if !tty.IsTTY() {
 		fmtc.DisableColors = true
+	}
+
+	switch {
+	case fmtc.Is256ColorsSupported():
+		colorTagApp, colorTagVer = "{*}{#99}", "{#99}"
+	default:
+		colorTagApp, colorTagVer = "{*}{m}", "{m}"
 	}
 }
 
@@ -253,7 +266,9 @@ func printMan() {
 
 // genUsage generates usage info
 func genUsage() *usage.Info {
-	info := usage.NewInfo()
+	info := usage.NewInfo("", "args…")
+
+	info.AppNameColorTag = colorTagApp
 
 	info.AddCommand(CMD_BASENAME, "Strip directory and suffix from filenames", "?path…")
 	info.AddCommand(CMD_DIRNAME, "Strip last component from file name", "?path…")
@@ -284,6 +299,8 @@ func genUsage() *usage.Info {
 	info.AddOption(OPT_NO_COLOR, "Disable colors in output")
 	info.AddOption(OPT_HELP, "Show this help message")
 	info.AddOption(OPT_VER, "Show version")
+
+	info.AddEnv("PATH_QUIET", "Flag to suppress all error messages {s-}(Boolean){!}")
 
 	info.AddExample(
 		CMD_BASENAME+" /path/to/file.txt",
@@ -321,6 +338,11 @@ func genAbout(gitRev string) *usage.About {
 		Desc:    DESC,
 		Year:    2009,
 		Owner:   "ESSENTIAL KAOS",
+
+		AppNameColorTag: colorTagApp,
+		VersionColorTag: colorTagVer,
+		DescSeparator:   "{s}—{!}",
+
 		License: "Apache License, Version 2.0 <https://www.apache.org/licenses/LICENSE-2.0>",
 	}
 
