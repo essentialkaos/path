@@ -10,7 +10,7 @@
 
 Summary:        Dead simple tool for working with paths
 Name:           path
-Version:        1.1.0
+Version:        1.1.1
 Release:        0%{?dist}
 Group:          Applications/System
 License:        Apache License, Version 2.0
@@ -103,6 +103,12 @@ fi
 ################################################################################
 
 %changelog
+* Thu May 08 2025 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
+- Added info about supported environment variables to usage info
+- Minor UI improvements
+- Code refactoring
+- Dependencies update
+
 * Fri Nov 08 2024 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
 - Added 'strip-ext' command
 - Code refactoring
