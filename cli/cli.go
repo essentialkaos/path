@@ -31,7 +31,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "1.1.1"
+	VER  = "1.2.0"
 	DESC = "Dead simple tool for working with paths"
 )
 
@@ -46,6 +46,7 @@ const (
 	OPT_HELP     = "h:help"
 	OPT_VER      = "v:version"
 
+	OPT_UPDATE       = "U:update"
 	OPT_VERB_VER     = "vv:verbose-version"
 	OPT_COMPLETION   = "completion"
 	OPT_GENERATE_MAN = "generate-man"
@@ -110,12 +111,13 @@ func Run(gitRev string, gomod []byte) {
 	runtime.GOMAXPROCS(1)
 
 	preConfigureUI()
+	preConfigureOptions()
 
 	args, errs := options.Parse(optMap)
 
 	if !errs.IsEmpty() {
 		terminal.Error("Options parsing errors:")
-		terminal.Error(errs.Error("- "))
+		terminal.Error(errs.Error(" - "))
 		os.Exit(1)
 	}
 
@@ -136,6 +138,8 @@ func Run(gitRev string, gomod []byte) {
 			WithDeps(deps.Extract(gomod)).
 			Print()
 		os.Exit(0)
+	case withSelfUpdate && options.GetB(OPT_UPDATE):
+		os.Exit(updateBinary())
 	case options.GetB(OPT_HELP) || len(args) == 0:
 		genUsage().Print()
 		os.Exit(0)
@@ -166,6 +170,11 @@ func preConfigureUI() {
 	default:
 		colorTagApp, colorTagVer = "{*}{m}", "{m}"
 	}
+}
+
+// preConfigureOptions preconfigures command-line options based on build tags
+func preConfigureOptions() {
+	optMap.SetIf(withSelfUpdate, OPT_UPDATE, &options.V{Type: options.MIXED})
 }
 
 // configureUI configures user interface
@@ -297,6 +306,11 @@ func genUsage() *usage.Info {
 	info.AddOption(OPT_SPACE, "End each output line with space, not newline")
 	info.AddOption(OPT_QUIET, "Suppress all error messages")
 	info.AddOption(OPT_NO_COLOR, "Disable colors in output")
+
+	if withSelfUpdate {
+		info.AddOption(OPT_UPDATE, "Update application to the latest version")
+	}
+
 	info.AddOption(OPT_HELP, "Show this help message")
 	info.AddOption(OPT_VER, "Show version")
 

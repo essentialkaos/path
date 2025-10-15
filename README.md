@@ -59,13 +59,13 @@ Summary
 
 #### From source
 
-To build the `path` from scratch, make sure you have a working [Go 1.23+](https://github.com/essentialkaos/.github/blob/master/GO-VERSION-SUPPORT.md) workspace (_[instructions](https://go.dev/doc/install)_), then:
+To build the `path` from scratch, make sure you have a working [Go 1.24+](https://github.com/essentialkaos/.github/blob/master/GO-VERSION-SUPPORT.md) workspace (_[instructions](https://go.dev/doc/install)_), then:
 
 ```
 go install github.com/essentialkaos/path@latest
 ```
 
-#### From [ESSENTIAL KAOS Public Repository](https://kaos.sh/kaos-repo) for EL 8/9
+#### From [ESSENTIAL KAOS Public Repository](https://kaos.sh/kaos-repo) for EL 8/9/10
 
 ```bash
 sudo dnf install -y https://pkgs.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
@@ -80,23 +80,40 @@ You can download prebuilt binaries for Linux and macOS from [EK Apps Repository]
 bash <(curl -fsSL https://apps.kaos.st/get) path
 ```
 
+### Upgrading
+
+Since version `1.2.0` you can update `path` to the latest release using [self-update feature](https://github.com/essentialkaos/.github/blob/master/APPS-UPDATE.md):
+
+```bash
+path --update
+```
+
+This command will runs a self-update in interactive mode. If you want to run a quiet update (_no output_), use the following command:
+
+```bash
+path --update=quiet
+```
+
+> [!NOTE]
+> Please note that the self-update feature only works with binaries that are downloaded from the [EK Apps Repository](https://apps.kaos.st/path/latest). Binaries from packages do not have a self-update feature and must be upgraded via the package manager.
+
 ### Command-line completion
 
 You can generate completion for `bash`, `zsh` or `fish` shell.
 
 Bash:
 ```bash
-sudo path --completion=bash 1> /etc/bash_completion.d/path
+path --completion=bash | sudo tee /etc/bash_completion.d/path > /dev/null
 ```
 
 ZSH:
 ```bash
-sudo path --completion=zsh 1> /usr/share/zsh/site-functions/path
+path --completion=zsh | sudo tee /usr/share/zsh/site-functions/path > /dev/null
 ```
 
 Fish:
 ```bash
-sudo path --completion=fish 1> /usr/share/fish/vendor_completions.d/path.fish
+path --completion=fish | sudo tee /usr/share/fish/vendor_completions.d/path.fish > /dev/null
 ```
 
 ### Man documentation
