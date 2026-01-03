@@ -9,7 +9,7 @@ fast-finish yes
 
 command "path basename" "Check basic command without arguments"
   exit 1
-  output-contains "Input is empty"
+  output-contains "There is no data for command"
 
 command "path -q basename" "Check basic command without arguments in quiet mode"
   exit 1
