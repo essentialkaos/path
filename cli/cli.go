@@ -8,12 +8,15 @@ package app
 // ////////////////////////////////////////////////////////////////////////////////// //
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"runtime"
 	"strings"
 
 	"github.com/essentialkaos/ek/v13/fmtc"
+	"github.com/essentialkaos/ek/v13/fsutil"
 	"github.com/essentialkaos/ek/v13/options"
 	"github.com/essentialkaos/ek/v13/support"
 	"github.com/essentialkaos/ek/v13/support/deps"
@@ -31,8 +34,8 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "1.2.0"
-	DESC = "Dead simple tool for working with paths"
+	VER  = "2.0.0"
+	DESC = "Tool for working with paths"
 )
 
 // ////////////////////////////////////////////////////////////////////////////////// //
@@ -81,6 +84,20 @@ const (
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 
+// handerFunc is a function for processing command data
+type handerFunc func(data string, args options.Arguments) (string, error, bool)
+
+// handler contains base info for command handler
+type handler struct {
+	Func handerFunc        // Handler function
+	Args options.Arguments // Command arguments
+}
+
+// pipe is a slice of handler to process data
+type pipe []*handler
+
+// ////////////////////////////////////////////////////////////////////////////////// //
+
 // optMap contains information about all supported options
 var optMap = options.Map{
 	OPT_ZERO:     {Type: options.BOOL},
@@ -103,6 +120,27 @@ var colorTagApp string
 
 // colorTagVer is app version color tag
 var colorTagVer string
+
+// separator is data separator
+var separator string
+
+// hasStdinData is marker that shows that there some data in stdin
+var hasStdinData bool
+
+// ////////////////////////////////////////////////////////////////////////////////// //
+
+// minCmdArgs contains minimum number of arguments
+var minCmdArgs = map[string]int{
+	CMD_DIRNAME_NUM: 1,
+	CMD_MATCH:       1,
+	CMD_JOIN:        1,
+	CMD_ADD_PREFIX:  1,
+	CMD_DEL_PREFIX:  1,
+	CMD_ADD_SUFFIX:  1,
+	CMD_DEL_SUFFIX:  1,
+	CMD_EXCLUDE:     1,
+	CMD_IS_MATCH:    1,
+}
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 
@@ -145,7 +183,7 @@ func Run(gitRev string, gomod []byte) {
 		os.Exit(0)
 	}
 
-	err, ok := process(args)
+	err, ok := runCommands(args)
 
 	if err != nil {
 		printError(err.Error())
@@ -184,59 +222,222 @@ func configureUI() {
 	}
 
 	quietMode = options.GetB(OPT_QUIET) || os.Getenv("PATH_QUIET") != ""
+
+	switch {
+	case options.GetB(OPT_SPACE):
+		separator = " "
+	case options.GetB(OPT_ZERO):
+		separator = "\x00"
+	default:
+		separator = "\n"
+	}
+
+	if !fsutil.IsCharacterDevice("/dev/stdin") {
+		hasStdinData = true
+	}
 }
 
-// process starts arguments processing
-func process(args options.Arguments) (error, bool) {
+// runCommands starts arguments processing
+func runCommands(args options.Arguments) (error, bool) {
+	var cmds pipe
+	var err error
+	var data []string
+	var hdlr *handler
+
 	cmd := args.Get(0).String()
-	cmdArgs := args[1:]
+
+	if strings.ContainsRune(cmd, ',') {
+		cmds, err = parseCommandPipe(cmd)
+		data = args[1:].Strings()
+	} else {
+		hdlr, data, err = createCommandHandler(cmd, args[1:])
+		cmds = pipe{hdlr}
+	}
+
+	if err != nil {
+		return err, false
+	}
+
+	if !hasStdinData && len(data) == 0 {
+		return fmt.Errorf("There is no data for command"), false
+	}
+
+	if len(data) > 0 {
+		err, ok := processArgsData(cmds, data)
+
+		if err != nil || !ok {
+			return err, ok
+		}
+	}
+
+	if hasStdinData {
+		err, ok := processStdinData(cmds)
+
+		if err != nil || !ok {
+			return err, ok
+		}
+	}
+
+	return nil, false
+}
+
+// processArgsData runs commands over data passed as CLI arguments
+func processArgsData(cmds pipe, data []string) (error, bool) {
+	for _, str := range data {
+		err, ok := executePipeHandlers(cmds, str)
+
+		if err != nil || !ok {
+			return err, ok
+		}
+	}
+
+	return nil, true
+}
+
+// processStdinData runs commands over data passed via standart input
+func processStdinData(cmds pipe) (error, bool) {
+	r := bufio.NewReader(os.Stdin)
+	delim := separator[0]
+
+	for {
+		str, err := r.ReadString(delim)
+
+		if err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				return fmt.Errorf("Can't read stdin data: %v", err), false
+			}
+		}
+
+		str = strings.TrimRight(str, separator)
+		err, ok := executePipeHandlers(cmds, str)
+
+		if err != nil || !ok {
+			return err, ok
+		}
+	}
+
+	return nil, false
+}
+
+// parseCommandPipe parses command pipe
+func parseCommandPipe(data string) (pipe, error) {
+	var result pipe
+
+	for _, cmd := range strings.Split(data, ",") {
+		var args options.Arguments
+		var rawArgs string
+
+		if strings.ContainsRune(cmd, '+') {
+			cmd, rawArgs, _ = strings.Cut(cmd, "+")
+			args = options.NewArguments(strings.Split(rawArgs, "+")...)
+		}
+
+		h, _, err := createCommandHandler(cmd, args)
+
+		if err != nil {
+			return nil, err
+		}
+
+		result = append(result, h)
+	}
+
+	return result, nil
+}
+
+// createCommandHandler returns handler for command
+func createCommandHandler(cmd string, args options.Arguments) (*handler, []string, error) {
+	cmd = strings.ToLower(cmd)
+	minArgs := minCmdArgs[cmd]
+
+	if minArgs > 0 && len(args) < minArgs {
+		return nil, nil, fmt.Errorf("Not enough arguments for command %q", cmd)
+	}
 
 	switch strings.ToLower(cmd) {
 	case CMD_BASENAME, "basename":
-		return cmdBasename(cmdArgs)
+		return &handler{cmdBasename, nil}, args.Strings(), nil
+
 	case CMD_DIRNAME, "dirname":
-		return cmdDirname(cmdArgs)
+		return &handler{cmdDirname, nil}, args.Strings(), nil
+
 	case CMD_DIRNAME_NUM:
-		return cmdDirnameNum(cmdArgs)
+		return &handler{cmdDirnameNum, args[:minArgs]}, args[minArgs:].Strings(), nil
+
 	case CMD_READLINK, "readlink":
-		return cmdReadlink(cmdArgs)
+		return &handler{cmdReadlink, nil}, args.Strings(), nil
+
 	case CMD_CLEAN:
-		return cmdClean(cmdArgs)
+		return &handler{cmdClean, nil}, args.Strings(), nil
+
 	case CMD_COMPACT:
-		return cmdCompact(cmdArgs)
+		return &handler{cmdCompact, nil}, args.Strings(), nil
+
 	case CMD_ABS:
-		return cmdAbs(cmdArgs)
+		return &handler{cmdAbs, nil}, args.Strings(), nil
+
 	case CMD_EXT:
-		return cmdExt(cmdArgs)
+		return &handler{cmdExt, nil}, args.Strings(), nil
+
 	case CMD_MATCH:
-		return cmdMatch(cmdArgs)
+		return &handler{cmdMatch, args[:minArgs]}, args[minArgs:].Strings(), nil
+
 	case CMD_JOIN:
-		return cmdJoin(cmdArgs)
+		return &handler{cmdJoin, args[:minArgs]}, args[minArgs:].Strings(), nil
 
 	case CMD_ADD_PREFIX:
-		return cmdAddPrefix(cmdArgs)
+		return &handler{cmdAddPrefix, args[:minArgs]}, args[minArgs:].Strings(), nil
+
 	case CMD_DEL_PREFIX:
-		return cmdDelPrefix(cmdArgs)
+		return &handler{cmdDelPrefix, args[:minArgs]}, args[minArgs:].Strings(), nil
+
 	case CMD_ADD_SUFFIX:
-		return cmdAddSuffix(cmdArgs)
+		return &handler{cmdAddSuffix, args[:minArgs]}, args[minArgs:].Strings(), nil
+
 	case CMD_DEL_SUFFIX:
-		return cmdDelSuffix(cmdArgs)
+		return &handler{cmdDelSuffix, args[:minArgs]}, args[minArgs:].Strings(), nil
+
 	case CMD_EXCLUDE:
-		return cmdExclude(cmdArgs)
+		return &handler{cmdExclude, args[:minArgs]}, args[minArgs:].Strings(), nil
+
 	case CMD_STRIP_EXT:
-		return cmdStripExt(cmdArgs)
+		return &handler{cmdStripExt, nil}, args.Strings(), nil
 
 	case CMD_IS_ABS:
-		return cmdIsAbs(cmdArgs)
+		return &handler{cmdIsAbs, nil}, args.Strings(), nil
+
 	case CMD_IS_LOCAL:
-		return cmdIsLocal(cmdArgs)
+		return &handler{cmdIsLocal, nil}, args.Strings(), nil
+
 	case CMD_IS_SAFE:
-		return cmdIsSafe(cmdArgs)
+		return &handler{cmdIsSafe, nil}, args.Strings(), nil
+
 	case CMD_IS_MATCH:
-		return cmdIsMatch(cmdArgs)
+		return &handler{cmdIsMatch, args[:minArgs]}, args[minArgs:].Strings(), nil
 	}
 
-	return fmt.Errorf("Unknown command %q", cmd), false
+	return nil, nil, fmt.Errorf("Unknown command %q", cmd)
+}
+
+// executePipeHandlers executes all handlers in pipe with given data
+func executePipeHandlers(p pipe, data string) (error, bool) {
+	var err error
+	var ok bool
+
+	for _, cmd := range p {
+		data, err, ok = cmd.Func(data, cmd.Args)
+
+		if err != nil || !ok {
+			return err, ok
+		}
+	}
+
+	if data != "" {
+		fmt.Printf("%s%s", data, separator)
+	}
+
+	return nil, true
 }
 
 // printError prints error message to console
