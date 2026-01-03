@@ -9,7 +9,7 @@ fast-finish yes
 
 command "path basename" "Check basic command without arguments"
   exit 1
-  output-contains "Input is empty"
+  output-contains "There is no data for command"
 
 command "path -q basename" "Check basic command without arguments in quiet mode"
   exit 1
@@ -75,7 +75,7 @@ command "path ext /home/user/john/file.txt" "Check ext command"
   output-contains ".txt"
 
 command "path ext /home/user/john" "Check ext command (no ext)"
-  exit 1
+  exit 0
   output-empty
 
 ################################################################################
@@ -87,37 +87,55 @@ command "path match /home/user/*/file.txt /home/user/bob/file.txt /home/user/bob
 
 ################################################################################
 
-command "path -s add-prefix /home/user/ john bob jack"
+command "path -s add-prefix /home/user/ john bob jack" "Check add-prefix command"
   exit 0
   output-contains "/home/user/john /home/user/bob /home/user/jack"
 
 ################################################################################
 
-command "path -s del-prefix /home/user/ /home/user/john /home/user/bob /home/user/jack"
+command "path -s del-prefix /home/user/ /home/user/john /home/user/bob /home/user/jack" "Check del-prefix command"
   exit 0
   output-contains "john bob jack"
 
 ################################################################################
 
-command "path -s add-suffix .jpg john bob jack"
+command "path -s add-suffix .jpg john bob jack" "Check add-suffix command"
   exit 0
   output-contains "john.jpg bob.jpg jack.jpg"
 
 ################################################################################
 
-command "path -s del-suffix .jpg john.jpg bob.jpg jack.jpg"
+command "path -s del-suffix .jpg john.jpg bob.jpg jack.jpg" "Check del-suffix command"
   exit 0
   output-contains "john bob jack"
 
 ################################################################################
 
-command "path -s exclude _small john_small.jpg bob_small.jpg jack_small.jpg"
+command "path -s exclude _small john_small.jpg bob_small.jpg jack_small.jpg" "Check exclude command"
   exit 0
   output-contains "john.jpg bob.jpg jack.jpg"
 
 ################################################################################
 
-command "path -s strip-ext john.jpg bob.png jack.TIFF"
+command "path -s replace small 32px john_small.jpg bob_small.jpg jack_small.jpg" "Check replace command"
+  exit 0
+  output-contains "john_32px.jpg bob_32px.jpg jack_32px.jpg"
+
+################################################################################
+
+command "path lower jack.TIFF" "Check lower command"
+  exit 0
+  output-contains "jack.tiff"
+
+################################################################################
+
+command "path upper jack.TIFF" "Check upper command"
+  exit 0
+  output-contains "JACK.TIFF"
+
+################################################################################
+
+command "path -s strip-ext john.jpg bob.png jack.TIFF" "Check strip-ext command"
   exit 0
   output-contains "john bob jack"
 
@@ -161,3 +179,6 @@ command "path base -s /home/user/bob/file.txt /home/user/bob/file.log" "Check cu
 
 ################################################################################
 
+command "path 'base,strip-ext,upper' /home/user/bob/file.txt" "Check command piping"
+  exit 0
+  output-contains "FILE"

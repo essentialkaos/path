@@ -33,6 +33,12 @@ find . -mindepth 1 -maxdepth 1 -type d -exec basename {}  \;
 find . -mindepth 1 -maxdepth 1 -type d | path basename
 ```
 
+Since version 2, `path` has allowed commands to be piped together, reducing the number of tool calls required (_useful for scripts_).
+
+```bash
+find . -mindepth 1 -type f | path 'base,lower,match+*.go'
+```
+
 Also, it works **MUCH** faster (~120x):
 
 ```
