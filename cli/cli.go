@@ -73,8 +73,11 @@ const (
 	CMD_DEL_PREFIX = "del-prefix"
 	CMD_ADD_SUFFIX = "add-suffix"
 	CMD_DEL_SUFFIX = "del-suffix"
-	CMD_EXCLUDE    = "exclude"
 	CMD_STRIP_EXT  = "strip-ext"
+	CMD_EXCLUDE    = "exclude"
+	CMD_REPLACE    = "replace"
+	CMD_LOWER      = "lower"
+	CMD_UPPER      = "upper"
 
 	CMD_IS_ABS   = "is-abs"
 	CMD_IS_LOCAL = "is-local"
@@ -89,7 +92,7 @@ type handlerFunc func(data string, args options.Arguments) (string, error, bool)
 
 // handler contains base info for command handler
 type handler struct {
-	Func handlerFunc        // Handler function
+	Func handlerFunc       // Handler function
 	Args options.Arguments // Command arguments
 }
 
@@ -139,6 +142,7 @@ var minCmdArgs = map[string]int{
 	CMD_ADD_SUFFIX:  1,
 	CMD_DEL_SUFFIX:  1,
 	CMD_EXCLUDE:     1,
+	CMD_REPLACE:     2,
 	CMD_IS_MATCH:    1,
 }
 
@@ -401,6 +405,15 @@ func createCommandHandler(cmd string, args options.Arguments) (*handler, []strin
 	case CMD_EXCLUDE:
 		return &handler{cmdExclude, args[:minArgs]}, args[minArgs:].Strings(), nil
 
+	case CMD_REPLACE:
+		return &handler{cmdReplace, args[:minArgs]}, args[minArgs:].Strings(), nil
+
+	case CMD_LOWER, "lower-case":
+		return &handler{cmdLower, nil}, args.Strings(), nil
+
+	case CMD_UPPER, "upper-case":
+		return &handler{cmdUpper, nil}, args.Strings(), nil
+
 	case CMD_STRIP_EXT:
 		return &handler{cmdStripExt, nil}, args.Strings(), nil
 
@@ -495,7 +508,10 @@ func genUsage() *usage.Info {
 	info.AddCommand(CMD_DEL_PREFIX, "Remove the substring at the beginning", "prefix", "?path…")
 	info.AddCommand(CMD_ADD_SUFFIX, "Add the substring at the end", "suffix", "?path…")
 	info.AddCommand(CMD_DEL_SUFFIX, "Remove the substring at the end", "suffix", "?path…")
-	info.AddCommand(CMD_EXCLUDE, "Exclude part of the string", "substr", "?path…")
+	info.AddCommand(CMD_EXCLUDE, "Exclude part of the path", "substr", "?path…")
+	info.AddCommand(CMD_REPLACE, "Replace part of the path", "old", "new", "?path…")
+	info.AddCommand(CMD_LOWER, "Convert path to lower case", "?path…")
+	info.AddCommand(CMD_UPPER, "Convert path to upper case", "?path…")
 	info.AddCommand(CMD_STRIP_EXT, "Remove file extension", "?path…")
 
 	info.AddCommand(CMD_IS_ABS, "Check if given path is absolute", "?path…")

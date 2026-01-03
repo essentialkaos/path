@@ -112,6 +112,23 @@ func cmdExclude(data string, args options.Arguments) (string, error, bool) {
 	return strutil.Exclude(data, args.Get(0).String()), nil, true
 }
 
+// cmdReplace is handler for "replace" command
+func cmdReplace(data string, args options.Arguments) (string, error, bool) {
+	return strings.ReplaceAll(
+		data, args.Get(0).String(), args.Get(1).String(),
+	), nil, true
+}
+
+// cmdLower is handler for "lower" command
+func cmdLower(data string, args options.Arguments) (string, error, bool) {
+	return strings.ToLower(data), nil, true
+}
+
+// cmdUpper is handler for "upper" command
+func cmdUpper(data string, args options.Arguments) (string, error, bool) {
+	return strings.ToUpper(data), nil, true
+}
+
 // cmdStripExt is handler for "strip-ext" command
 func cmdStripExt(data string, args options.Arguments) (string, error, bool) {
 	ext := path.Ext(data)
