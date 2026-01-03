@@ -278,7 +278,7 @@ func runCommands(args options.Arguments) (error, bool) {
 		}
 	}
 
-	return nil, false
+	return nil, true
 }
 
 // processArgsData runs commands over data passed as CLI arguments
