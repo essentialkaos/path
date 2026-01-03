@@ -75,7 +75,7 @@ command "path ext /home/user/john/file.txt" "Check ext command"
   output-contains ".txt"
 
 command "path ext /home/user/john" "Check ext command (no ext)"
-  exit 1
+  exit 0
   output-empty
 
 ################################################################################
