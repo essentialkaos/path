@@ -270,7 +270,7 @@ func runCommands(args options.Arguments) (error, bool) {
 		err, ok := processArgsData(cmds, data)
 
 		if err != nil || !ok {
-			return err, ok
+			return err, false
 		}
 	}
 
@@ -278,7 +278,7 @@ func runCommands(args options.Arguments) (error, bool) {
 		err, ok := processStdinData(cmds)
 
 		if err != nil || !ok {
-			return err, ok
+			return err, false
 		}
 	}
 
@@ -291,7 +291,7 @@ func processArgsData(cmds pipe, data []string) (error, bool) {
 		err, ok := executePipeHandlers(cmds, str)
 
 		if err != nil || !ok {
-			return err, ok
+			return err, false
 		}
 	}
 
@@ -318,7 +318,7 @@ func processStdinData(cmds pipe) (error, bool) {
 		err, ok := executePipeHandlers(cmds, str)
 
 		if err != nil || !ok {
-			return err, ok
+			return err, false
 		}
 	}
 
