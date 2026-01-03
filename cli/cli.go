@@ -322,7 +322,7 @@ func processStdinData(cmds pipe) (error, bool) {
 		}
 	}
 
-	return nil, false
+	return nil, true
 }
 
 // parseCommandPipe parses command pipe
