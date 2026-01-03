@@ -518,28 +518,38 @@ func genUsage() *usage.Info {
 	info.AddEnv("PATH_QUIET", "Flag to suppress all error messages {s-}(Boolean){!}")
 
 	info.AddExample(
-		CMD_BASENAME+" /path/to/file.txt",
+		"base /path/to/file.txt",
 		"→ file.txt",
 	)
 
 	info.AddExample(
-		CMD_DIRNAME+" /path/to/file.txt",
+		"dir /path/to/file.txt",
 		"→ /path/to",
 	)
 
 	info.AddExample(
-		CMD_COMPACT+" /very/long/path/to/some/file.txt",
+		"compact /very/long/path/to/some/file.txt",
 		"→ /v/l/p/t/s/file.txt",
 	)
 
+	info.AddExample(
+		"path abs,strip-ext *",
+		"Run many commands at once using piping",
+	)
+
 	info.AddRawExample(
-		"ls -1 | path "+CMD_IS_MATCH+" '*.txt' && echo MATCH!",
+		`find . -type f | path 'base,match+*.md,strip-ext'`,
+		"Run many commands at once using piping with stdin data",
+	)
+
+	info.AddRawExample(
+		"ls -1 | path is-match '*.txt' && echo MATCH!",
 		"Check if all files in current directory is match to pattern",
 	)
 
 	info.AddRawExample(
-		"PATH_QUIET=1 path "+CMD_DIRNAME+" /path/to/file.txt",
-		"Run "+CMD_DIRNAME+" command in quiet mode enabled by environment variable",
+		"PATH_QUIET=1 path dir /path/to/file.txt",
+		"Run dir command in quiet mode enabled by environment variable",
 	)
 
 	return info
