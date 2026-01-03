@@ -84,12 +84,12 @@ const (
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 
-// handerFunc is a function for processing command data
-type handerFunc func(data string, args options.Arguments) (string, error, bool)
+// handlerFunc is a function for processing command data
+type handlerFunc func(data string, args options.Arguments) (string, error, bool)
 
 // handler contains base info for command handler
 type handler struct {
-	Func handerFunc        // Handler function
+	Func handlerFunc        // Handler function
 	Args options.Arguments // Command arguments
 }
 
@@ -294,7 +294,7 @@ func processArgsData(cmds pipe, data []string) (error, bool) {
 	return nil, true
 }
 
-// processStdinData runs commands over data passed via standart input
+// processStdinData runs commands over data passed via standard input
 func processStdinData(cmds pipe) (error, bool) {
 	r := bufio.NewReader(os.Stdin)
 	delim := separator[0]
