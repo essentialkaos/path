@@ -10,7 +10,7 @@
 
 Summary:        Dead simple tool for working with paths
 Name:           path
-Version:        2.0.0
+Version:        2.0.1
 Release:        0%{?dist}
 Group:          Applications/System
 License:        Apache License, Version 2.0
@@ -103,6 +103,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jan 20 2026 Anton Novojilov <andy@essentialkaos.com> - 2.0.1-0
+- Dependencies update
+
 * Sat Jan 03 2026 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
 - Commands piping
 - Added command 'replace'
