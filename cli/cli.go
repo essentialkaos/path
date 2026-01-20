@@ -34,7 +34,7 @@ import (
 // Basic utility info
 const (
 	APP  = "path"
-	VER  = "2.0.0"
+	VER  = "2.0.1"
 	DESC = "Tool for working with paths"
 )
 
